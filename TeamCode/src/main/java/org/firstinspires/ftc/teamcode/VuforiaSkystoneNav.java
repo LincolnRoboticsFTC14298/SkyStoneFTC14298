@@ -158,7 +158,8 @@ public class VuforiaSkystoneNav extends LinearOpMode {
 
         double leftPower = 0;
         double rightPower = 0;
-
+        String currentState = "Turning";
+        
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
 
@@ -368,27 +369,28 @@ public class VuforiaSkystoneNav extends LinearOpMode {
                 double angle_difference = calculated_angle - rotation.thirdAngle;
                 telemetry.addData("Angle Difference: ", angle_difference);
 
-                String currentState = "turning";
-                if (currentState.equals("turning")) {
+
+                if (currentState.equals("Turning")) {
                     if (angle_difference > error) {
-                        rightPower = 0.1;
-                        leftPower = -0.1;
-                    } else if (angle_difference < -1 * error) {
                         rightPower = -0.1;
                         leftPower = 0.1;
+                    } else if (angle_difference < -1 * error) {
+                        rightPower = 0.1;
+                        leftPower = -0.1;
                     } else {
                         rightPower = 0;
                         leftPower = 0;
-                        currentState = "moveForward";
+                        currentState = "Move Forward";
                     }
                     leftDrive.setPower(leftPower);
                     rightDrive.setPower(rightPower);
-                } else if (currentState.equals("moveForward")) {
+                } else if (currentState.equals("Move Forward")) {
                     leftDrive.setPower(0.3);
                     rightDrive.setPower(0.3);
                     sleep(2000);
                     currentState = "Finished";
                 }
+                telemetry.addData("Current State: ", currentState);
             }
             else {
                 telemetry.addData("Visible Target", "none");
