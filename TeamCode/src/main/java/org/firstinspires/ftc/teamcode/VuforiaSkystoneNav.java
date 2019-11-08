@@ -34,9 +34,12 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
@@ -45,6 +48,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
+import com.vuforia.CameraDevice;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -142,6 +146,8 @@ public class VuforiaSkystoneNav extends LinearOpMode {
     // Declare OpMode members
     private DcMotor leftDrive = null;
     private DcMotor rightDrive = null;
+    private Servo rightHand = null;
+    private Servo leftHand = null;
 
     @Override public void runOpMode() {
         /*
@@ -152,14 +158,23 @@ public class VuforiaSkystoneNav extends LinearOpMode {
 
         leftDrive = hardwareMap.get(DcMotor.class, "left_drive");
         rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
+        leftHand = hardwareMap.servo.get("left_hand");
+        rightHand = hardwareMap.servo.get("right_hand");
 
         leftDrive.setDirection(DcMotor.Direction.FORWARD);
         rightDrive.setDirection(DcMotor.Direction.REVERSE);
 
+        // Open claw
+        leftHand.setPosition(0);
+        rightHand.setPosition(1);
+
         double leftPower = 0;
         double rightPower = 0;
+
+        double distance = 0;
+        double endOfSearch = 0;
         String currentState = "Turning";
-        
+
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
 
@@ -170,6 +185,7 @@ public class VuforiaSkystoneNav extends LinearOpMode {
 
         //  Instantiate the Vuforia engine
         vuforia = ClassFactory.getInstance().createVuforia(parameters);
+        // CameraDevice.getInstance().setFlashTorchMode(true);
 
         // Load the data sets for the trackable objects. These particular data
         // sets are stored in the 'assets' part of our application.
@@ -311,7 +327,7 @@ public class VuforiaSkystoneNav extends LinearOpMode {
         // In this example, it is centered (left to right), but forward of the middle of the robot, and above ground level.
         final float CAMERA_FORWARD_DISPLACEMENT  = 0.0f * mmPerInch;   // eg: Camera is 4 Inches in front of robot center
         final float CAMERA_VERTICAL_DISPLACEMENT = 0.0f * mmPerInch;   // eg: Camera is 8 Inches above ground
-        final float CAMERA_LEFT_DISPLACEMENT     = 0.0f * mmPerInch;     // eg: Camera is ON the robot's center line
+        final float CAMERA_LEFT_DISPLACEMENT     = 4.0f * mmPerInch;     // eg: Camera is ON the robot's center line
 
         OpenGLMatrix robotFromCamera = OpenGLMatrix
                     .translation(CAMERA_FORWARD_DISPLACEMENT, CAMERA_LEFT_DISPLACEMENT, CAMERA_VERTICAL_DISPLACEMENT)
@@ -336,12 +352,13 @@ public class VuforiaSkystoneNav extends LinearOpMode {
 
         targetsSkyStone.activate();
         while (!isStopRequested()) {
-
+            String targetName = "";
             // check all the trackable targets to see which one (if any) is visible.
             targetVisible = false;
             for (VuforiaTrackable trackable : allTrackables) {
                 if (((VuforiaTrackableDefaultListener)trackable.getListener()).isVisible()) {
                     telemetry.addData("Visible Target", trackable.getName());
+                    targetName = trackable.getName();
                     targetVisible = true;
 
                     // getUpdatedRobotLocation() will return null if no new information is available since
@@ -355,7 +372,7 @@ public class VuforiaSkystoneNav extends LinearOpMode {
             }
 
             // Provide feedback as to where the robot is located (if we know).
-            if (targetVisible) {
+            if (targetVisible && targetName == "Stone Target") {
                 // express position (translation) of robot in inches.
                 VectorF translation = lastLocation.getTranslation();
                 telemetry.addData("Pos (in)", "{X, Y, Z} = %.1f, %.1f, %.1f",
@@ -365,35 +382,71 @@ public class VuforiaSkystoneNav extends LinearOpMode {
 
                 double error = 5;
                 double calculated_angle = Math.toDegrees(Math.atan((translation.get(1) / mmPerInch) / (translation.get(0) / mmPerInch)));
+
                 telemetry.addData("Calculated angle: ", calculated_angle);
                 double angle_difference = calculated_angle - rotation.thirdAngle;
                 telemetry.addData("Angle Difference: ", angle_difference);
 
 
                 if (currentState.equals("Turning")) {
+                    distance = Math.sqrt(Math.pow(translation.get(1) / mmPerInch, 2) + Math.pow(translation.get(0) / mmPerInch, 2));
                     if (angle_difference > error) {
-                        rightPower = -0.1;
-                        leftPower = 0.1;
+                        rightPower = -0.2;
+                        leftPower = 0.2;
                     } else if (angle_difference < -1 * error) {
-                        rightPower = 0.1;
-                        leftPower = -0.1;
+                        rightPower = 0.2;
+                        leftPower = -0.2;
                     } else {
                         rightPower = 0;
                         leftPower = 0;
+                        endOfSearch = new ElapsedTime().seconds();
                         currentState = "Move Forward";
                     }
                     leftDrive.setPower(leftPower);
                     rightDrive.setPower(rightPower);
                 } else if (currentState.equals("Move Forward")) {
-                    leftDrive.setPower(0.3);
-                    rightDrive.setPower(0.3);
-                    sleep(2000);
-                    currentState = "Finished";
+                    double current_distance = Math.sqrt(Math.pow(translation.get(1) / mmPerInch, 2) + Math.pow(translation.get(0) / mmPerInch, 2));
+                    telemetry.addData("Distance: ", distance);
+                    telemetry.addData("Current Distance: ", current_distance);
+
+                    // leftDrive.setPower(-current_distance / distance);
+                    // rightDrive.setPower(-current_distance / distance);
+                    leftDrive.setPower(-0.3);
+                    rightDrive.setPower(-0.3);
+                    double current_time = new ElapsedTime().seconds();
+
+                    if (current_time - endOfSearch > 0.5) {
+                        leftDrive.setPower(0);
+                        rightDrive.setPower(0);
+
+                        sleep(100);
+
+                        leftHand.setPosition(1);
+                        rightHand.setPosition(0);
+
+                        currentState = "Finished";
+                    }
+                } else if (currentState.equals("Finished")) {
+                    leftDrive.setPower(0);
+                    rightDrive.setPower(0);
+                    break;
                 }
                 telemetry.addData("Current State: ", currentState);
+                telemetry.addData("Left Power: ", leftDrive.getPower());
+                telemetry.addData("Right Power: ", rightDrive.getPower());
             }
             else {
                 telemetry.addData("Visible Target", "none");
+                telemetry.addData("Current State: ", currentState);
+                telemetry.addData("Left Power: ", leftDrive.getPower());
+                telemetry.addData("Right Power: ", rightDrive.getPower());
+
+                leftDrive.setPower(-0.15);
+                rightDrive.setPower(-0.15);
+                sleep(250);
+                leftDrive.setPower(0);
+                rightDrive.setPower(0);
+                sleep(250);
             }
             telemetry.update();
         }
