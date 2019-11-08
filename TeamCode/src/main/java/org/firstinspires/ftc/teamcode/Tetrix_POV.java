@@ -60,7 +60,7 @@ public class Tetrix_POV extends LinearOpMode {
                     lift.setPower(1);
                 }
                 else if (gamepad1.dpad_down) {
-                    lift.setPower(-0.3);
+                    lift.setPower(-1);
                 } else {
                     lift.setPower(0);
                 }
