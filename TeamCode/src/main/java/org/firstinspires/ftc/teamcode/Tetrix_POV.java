@@ -16,9 +16,9 @@ public class Tetrix_POV extends LinearOpMode {
     private Servo left_hand;
     private Servo right_hand;
 
-    double ServoPosition = 0.5;
-    double ServoPosition2 = 0.5;
-    double ServoSpeed = 0.1;
+    private double ServoPosition = 0.5;
+    private double ServoPosition2 = 0.5;
+    private double ServoSpeed = 0.1;
 
     /**
      * This function is executed when this Op Mode is selected from the Driver Station.
