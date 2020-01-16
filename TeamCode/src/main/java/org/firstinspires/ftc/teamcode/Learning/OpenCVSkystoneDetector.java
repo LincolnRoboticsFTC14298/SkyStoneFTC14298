@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.Learning;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
@@ -24,7 +24,7 @@ import java.util.List;
 
 // Found and modified from
 // https://github.com/uhs3939/SkyStone/blob/master/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/opencvSkystoneDetector.java
-@Autonomous(name= "opencvSkystoneDetector")
+@Autonomous(name= "opencvSkystoneDetector", group="Learning")
 // @Disabled
 public class OpenCVSkystoneDetector extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();

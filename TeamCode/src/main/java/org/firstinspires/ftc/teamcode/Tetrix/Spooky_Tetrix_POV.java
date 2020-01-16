@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.Tetrix;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -12,7 +12,9 @@ import android.media.MediaPlayer;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
-@TeleOp(name = "Spooky_Tetrix_POV")
+import org.firstinspires.ftc.teamcode.R;
+
+@TeleOp(name = "Spooky_Tetrix_POV", group="Tetrix")
 @Disabled
 public class Spooky_Tetrix_POV extends OpMode {
 

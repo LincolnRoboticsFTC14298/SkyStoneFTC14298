@@ -27,7 +27,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.Learning;
 
 import com.qualcomm.ftccommon.SoundPlayer;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
@@ -67,7 +67,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
  *
  */
 
-@TeleOp(name="Concept: Sound Resources", group="Concept")
+@TeleOp(name="Concept: Sound Resources", group="Learning")
 public class ConceptSoundsASJava extends LinearOpMode {
 
     // Declare OpMode members.

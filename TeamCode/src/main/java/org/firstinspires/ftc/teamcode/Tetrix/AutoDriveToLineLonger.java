@@ -27,7 +27,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.Tetrix;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -35,6 +35,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
+
+import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
 
 /**
  * This file illustrates the concept of driving a path based on time.
@@ -51,8 +53,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="BlindCollectionRed", group="Pushbot")
-public class BlindAutoCollectionRed extends LinearOpMode {
+@Autonomous(name="AutoDriveToLineLonger", group="Tetrix")
+public class AutoDriveToLineLonger extends LinearOpMode {
 
     /* Declare OpMode members. */
     private ElapsedTime     runtime = new ElapsedTime();
@@ -79,52 +81,17 @@ public class BlindAutoCollectionRed extends LinearOpMode {
         right_hand = hardwareMap.servo.get("right_hand");
 
         // Send telemetry message to signify robot waiting;
-        telemetry.addData("Status", "Ready to run");
+        telemetry.addData("Status", "Ready to run");    //
         telemetry.update();
         right_drive.setDirection(DcMotorSimple.Direction.REVERSE);
-
-        left_hand.setPosition(0);
-        right_hand.setPosition(1);
-
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
         left_drive.setPower(-0.5);
         right_drive.setPower(-0.5);
 
-        sleep(750);
-
-        left_hand.setPosition(1);
-        right_hand.setPosition(0);
-
-        left_drive.setPower(0);
-        right_drive.setPower(0);
-
         sleep(1000);
-
-        left_drive.setPower(-0.5);
-        right_drive.setPower(0.5);
-
-        sleep(500);
         // Step through each leg of the path, ensuring that the Auto mode has not been stopped along the way
-
-        left_drive.setPower(-0.5);
-        right_drive.setPower(-0.5);
-
-        sleep(2500);
-
-        right_hand.setPosition(0);
-        left_hand.setPosition(1);
-
-        left_drive.setPower(0);
-        right_drive.setPower(0);
-
-        sleep(700);
-
-        left_drive.setPower(0.5);
-        right_drive.setPower(0.5);
-
-        sleep(200);
 
         left_drive.setPower(0);
         right_drive.setPower(0);

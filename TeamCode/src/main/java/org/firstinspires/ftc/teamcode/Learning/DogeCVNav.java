@@ -27,7 +27,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.Learning;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
@@ -44,7 +44,7 @@ import org.openftc.easyopencv.OpenCvInternalCamera;
 
 import java.util.Locale;
 
-@Autonomous(name="DogeCVNav")
+@Autonomous(name="DogeCVNav", group="Learning")
 public class DogeCVNav extends LinearOpMode {
     private OpenCvCamera phoneCam;
     private SkystoneDetector skyStoneDetector;
