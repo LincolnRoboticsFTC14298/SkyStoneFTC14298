@@ -9,11 +9,12 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class IntakeTest extends LinearOpMode {
     private DcMotor leftMotor, rightMotor;
     private Servo leftServo, rightServo;
-    private double speedFactor = 0.05;
+    private double speedFactor = 0.01;
     private double motorSpeed = 0.0;
-    private double servoPosition = 0.0;
+    private double servoPosition = 0.5;
 
     public void runOpMode() {
+        // Set defaults
         leftMotor = hardwareMap.dcMotor.get("leftIntakeMotor");
         rightMotor = hardwareMap.dcMotor.get("rightIntakeMotor");
 
@@ -26,21 +27,34 @@ public class IntakeTest extends LinearOpMode {
         leftMotor.setPower(0);
         rightMotor.setPower(0);
 
-        leftServo.setPosition(0);
-        rightServo.setPosition(0);
+        leftServo.setPosition(servoPosition);
+        rightServo.setPosition(servoPosition);
 
         waitForStart();
 
         if (opModeIsActive()) {
             while (opModeIsActive()) {
-                motorSpeed += speedFactor*gamepad1.left_stick_y;
-                servoPosition += speedFactor*gamepad2.right_stick_x;
+                // Start ejecting if button is pressed
+                if(gamepad1.a) {
+                    // Reverses direction of motor
+                    motorSpeed *= -1;
+                }
 
+                // The speed factor times the y sticks position is added to motor speed and servo position
+                motorSpeed += speedFactor*gamepad1.left_stick_y;
+                servoPosition += speedFactor*gamepad1.right_stick_y;
+
+                // Update power and position
                 leftMotor.setPower(motorSpeed);
                 rightMotor.setPower(motorSpeed);
 
                 leftServo.setPosition(servoPosition);
                 rightServo.setPosition(servoPosition);
+
+                // Print Telemetry
+                telemetry.addData("Left servo position: ", leftServo.getPosition());
+                telemetry.addData("Right servo position: ", rightServo.getPosition());
+                telemetry.addData("Motor speed: ", motorSpeed);
             }
         }
 
