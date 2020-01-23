@@ -66,7 +66,7 @@ import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="Pushbot: Auto Drive By Encoder", group="Tetrix")
+@Autonomous(name="Auto Drive By Encoder", group="Tetrix")
 
 public class PushbotAutoDriveByEncoder_Linear extends LinearOpMode {
 
@@ -84,13 +84,13 @@ public class PushbotAutoDriveByEncoder_Linear extends LinearOpMode {
 
     private ElapsedTime     runtime = new ElapsedTime();
 
-    static final double     COUNTS_PER_MOTOR_REV    = 1440 ;    // eg: TETRIX Motor Encoder
-    static final double     DRIVE_GEAR_REDUCTION    = 1.0 ;     // This is < 1.0 if geared UP
-    static final double     WHEEL_DIAMETER_INCHES   = 4.0 ;     // For figuring circumference
-    static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
+    private static final double     COUNTS_PER_MOTOR_REV    = 1440 ;    // eg: TETRIX Motor Encoder
+    private static final double     DRIVE_GEAR_REDUCTION    = 1.0 ;     // This is < 1.0 if geared UP
+    private static final double     WHEEL_DIAMETER_INCHES   = 4.0 ;     // For figuring circumference
+    private static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
                                                       (WHEEL_DIAMETER_INCHES * 3.1415);
-    static final double     DRIVE_SPEED             = 0.6;
-    static final double     TURN_SPEED              = 0.5;
+    private static final double     DRIVE_SPEED             = 0.6;
+    private static final double     TURN_SPEED              = 0.5;
 
     @Override
     public void runOpMode() {
@@ -149,7 +149,7 @@ public class PushbotAutoDriveByEncoder_Linear extends LinearOpMode {
      *  2) Move runs out of time
      *  3) Driver stops the opmode running.
      */
-    public void encoderDrive(double speed,
+    private void encoderDrive(double speed,
                              double leftInches, double rightInches,
                              double timeoutS) {
         int newLeftTarget;

@@ -5,24 +5,19 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
+import org.firstinspires.ftc.teamcode.Mecanum.MecanumBot;
+
 @TeleOp(name = "MecanumTeleOp", group="Mecanum Op")
 public class MecanumTeleOp extends LinearOpMode {
+    private MecanumBot robot = new MecanumBot();
 
-    private DcMotor leftFront, rightFront, leftBack, rightBack;
-
+    @Override
     public void runOpMode() {
-        leftFront = hardwareMap.dcMotor.get("leftFront");
-        rightFront = hardwareMap.dcMotor.get("rightFront");
-        leftBack = hardwareMap.dcMotor.get("leftBack");
-        rightBack = hardwareMap.dcMotor.get("rightBack");
-
-        rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
-        rightBack.setDirection(DcMotorSimple.Direction.REVERSE);
-
-        leftFront.setPower(0);
-        rightFront.setPower(0);
-        leftBack.setPower(0);
-        rightBack.setPower(0);
+        /*
+         * Initialize the drive system variables.
+         * The init() method of the hardware class does all the work here
+         */
+        robot.init(hardwareMap);
 
         waitForStart();
 
@@ -37,15 +32,15 @@ public class MecanumTeleOp extends LinearOpMode {
             final double lbPower = speed * Math.sin(angle) + turn;
             final double rbPower = speed * Math.cos(angle) - turn;
 
-            leftFront.setPower(lfPower);
-            rightFront.setPower(rfPower);
-            leftBack.setPower(lbPower);
-            rightBack.setPower(rbPower);
+            robot.leftFront.setPower(lfPower);
+            robot.rightFront.setPower(rfPower);
+            robot.leftBack.setPower(lbPower);
+            robot.rightBack.setPower(rbPower);
 
-            telemetry.addData("leftFront Power", leftFront.getPower());
-            telemetry.addData("rightFront Power", rightFront.getPower());
-            telemetry.addData("leftBack Power", leftBack.getPower());
-            telemetry.addData("rightBack Power", rightBack.getPower());
+            telemetry.addData("leftFront Power", robot.leftFront.getPower());
+            telemetry.addData("rightFront Power", robot.rightFront.getPower());
+            telemetry.addData("leftBack Power", robot.leftBack.getPower());
+            telemetry.addData("rightBack Power", robot.rightBack.getPower());
             telemetry.update();
         }
     }
