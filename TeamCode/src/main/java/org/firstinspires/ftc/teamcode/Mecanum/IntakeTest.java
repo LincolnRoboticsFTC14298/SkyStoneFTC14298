@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class IntakeTest extends LinearOpMode {
     private DcMotor leftMotor, rightMotor;
     private Servo leftServo, rightServo;
-    private double speedFactor = 0.01;
+    private double speedFactor = 1;
     private double motorSpeed = 0.0;
     private double servoPosition = 0.5;
 
@@ -34,15 +34,9 @@ public class IntakeTest extends LinearOpMode {
 
         if (opModeIsActive()) {
             while (opModeIsActive()) {
-                // Start ejecting if button is pressed
-                if(gamepad1.a) {
-                    // Reverses direction of motor
-                    motorSpeed *= -1;
-                }
-
                 // The speed factor times the y sticks position is added to motor speed and servo position
-                motorSpeed += speedFactor*gamepad1.left_stick_y;
-                servoPosition += speedFactor*gamepad1.right_stick_y;
+                motorSpeed = speedFactor*gamepad1.left_stick_y;
+                servoPosition = speedFactor*gamepad1.right_stick_y;
 
                 // Update power and position
                 leftMotor.setPower(motorSpeed);
