@@ -28,6 +28,7 @@ public class MecanumTeleOp extends LinearOpMode {
 
         while (!isStopRequested()) {
             double motorSpeed;
+            double clawPos = 1;
 
             double speed = Math.hypot(gamepad1.left_stick_x, gamepad1.left_stick_y);
             double angle = Math.atan2(-1 * gamepad1.left_stick_y, gamepad1.left_stick_x) - Math.PI / 4;
@@ -73,16 +74,24 @@ public class MecanumTeleOp extends LinearOpMode {
                 motorSpeed = 1; // Intake assuming right motor is reversed
             }
             else if (gamepad1.left_bumper) {
-                motorSpeed = -1; // Eject assumign right motor is reversed
+                motorSpeed = -1; // Eject assuming right motor is reversed
             }
             else {
                 motorSpeed = 0;
             }
+            if (gamepad1.left_trigger > 0.1) {
+                clawPos = Range.clip(clawPos - 0.01, .65, 1);
+            }
+            else if (gamepad1.right_trigger > 0.1) {
+                clawPos = Range.clip(clawPos + 0.01, .65, 1);
+            }
 
+            // Update power and position
             robot.leftIntakeServo.setPosition(leftIntakeServoPos);
             robot.rightIntakeServo.setPosition(rightIntakeServoPos);
 
-            // Update power and position
+            robot.claw.setPosition(clawPos);
+
             robot.leftIntakeMotor.setPower(motorSpeed);
             robot.rightIntakeMotor.setPower(motorSpeed);
         }

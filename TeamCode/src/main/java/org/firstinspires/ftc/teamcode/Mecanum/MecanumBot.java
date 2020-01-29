@@ -34,9 +34,12 @@ public class MecanumBot {
 
     private double rightIntakeServoPos = 0.8;
     private double leftIntakeServoPos = 0.5;
+    private double clawPos = 1;
 
     public Servo rightFoundationServo = null;
     public Servo leftFoundationServo = null;
+
+    public Servo claw = null;
 
     private  DcMotor[] wheelMotors = {leftFront, rightFront, leftBack, rightBack};
 
@@ -82,6 +85,8 @@ public class MecanumBot {
         leftIntakeServo = hwMap.get(Servo.class, "leftIntakeServo");
         rightIntakeServo = hwMap.get(Servo.class, "rightIntakeServo");
 
+        claw = hwMap.servo.get("claw");
+
         rightFront.setDirection(DcMotor.Direction.REVERSE);
         rightBack.setDirection(DcMotor.Direction.REVERSE);
 
@@ -108,6 +113,7 @@ public class MecanumBot {
         // Set the Servo to its starting positions
         leftIntakeServo.setPosition(leftIntakeServoPos);
         rightIntakeServo.setPosition(rightIntakeServoPos);
+        claw.setPosition(clawPos);
     }
 }
 

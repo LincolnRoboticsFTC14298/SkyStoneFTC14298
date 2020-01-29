@@ -12,12 +12,14 @@ public class ServoTest extends LinearOpMode {
     private Servo leftIntakeServo;
     private Servo rightIntakeServo;
 
+    private Servo claw;
     public void runOpMode() {
         leftFoundationServo = hardwareMap.get(Servo.class, "leftFoundationServo");
         rightFoundationServo = hardwareMap.get(Servo.class, "rightFoundationServo");
 
         leftIntakeServo = hardwareMap.servo.get("leftIntakeServo");
         rightIntakeServo = hardwareMap.servo.get("rightIntakeServo");
+        claw = hardwareMap.servo.get("claw");
 
         leftFoundationServo.setPosition(0);
         rightFoundationServo.setPosition(0);
@@ -25,9 +27,12 @@ public class ServoTest extends LinearOpMode {
         leftIntakeServo.setPosition(0.5);
         rightIntakeServo.setPosition(0.8);
 
+        claw.setPosition(1); // Most upright claw position
+
         double foundationPosition = 0;
         double intakeLPos = 0.5; // 0.5 closed, 0.13 to open
         double intakeRPos = 0.8; // 0.8 closed, 1 to open
+        double clawPos = 1; // 1 opened .65 closed
 
         waitForStart();
         while (opModeIsActive()) {
@@ -48,19 +53,28 @@ public class ServoTest extends LinearOpMode {
                 intakeLPos = Range.clip(intakeLPos + 0.01, 0.13, 0.5);
                 intakeRPos = Range.clip(intakeRPos - 0.01, 0.8, 1);
             }
+
+            if (gamepad1.left_trigger > 0.0) {
+                clawPos = Range.clip(clawPos + 0.01,.65,1);
+            }
+            if (gamepad1.right_trigger > 0.0) {
+                clawPos = Range.clip(clawPos - 0.01,.65,1);
+            }
             leftFoundationServo.setPosition(foundationPosition);
             rightFoundationServo.setPosition(foundationPosition);
 
             leftIntakeServo.setPosition(intakeLPos);
             rightIntakeServo.setPosition(intakeRPos);
 
+            claw.setPosition(clawPos);
+
             // Print Telemetry
             telemetry.addData("leftFoundationServo position: ", leftFoundationServo.getPosition());
             telemetry.addData("rightFoundationServo position: ", rightFoundationServo.getPosition());
             telemetry.addData("leftIntakeServo position: ", leftIntakeServo.getPosition());
             telemetry.addData("rightIntakeServo position: ", rightIntakeServo.getPosition());
+            telemetry.addData("claw position", claw.getPosition());
             telemetry.update();
         }
-
     }
 }
