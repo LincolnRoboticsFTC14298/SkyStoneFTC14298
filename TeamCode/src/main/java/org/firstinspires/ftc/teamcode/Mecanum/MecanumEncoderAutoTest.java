@@ -61,7 +61,11 @@ public class MecanumEncoderAutoTest extends LinearOpMode {
         telemetry.addData("Status", "Resetting Encoders");
         telemetry.update();
 
-        robot.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.leftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot. rightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
         robot.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         // Send telemetry message to indicate successful Encoder reset

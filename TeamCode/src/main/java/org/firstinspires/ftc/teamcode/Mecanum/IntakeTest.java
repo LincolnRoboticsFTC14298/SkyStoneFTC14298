@@ -4,14 +4,16 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.Range;
 
 @TeleOp(name = "MotorTest", group="Mecanum Op")
 public class IntakeTest extends LinearOpMode {
     private DcMotor leftMotor, rightMotor;
-    private Servo leftServo, rightServo;
+    private Servo leftIntakeServo, rightIntakeServo;
     private double speedFactor = 1;
     private double motorSpeed = 0.0;
-    private double servoPosition = 0.5;
+    private double leftIntakeServoPos = 0.5; // Closed at 0.5, opens at 0.13
+    private double rightIntakeServoPos = 0.8; // CLosed at 0.8, opens at 1.0
 
     public void runOpMode() {
         // Set defaults
@@ -19,37 +21,53 @@ public class IntakeTest extends LinearOpMode {
         rightMotor = hardwareMap.dcMotor.get("rightIntakeMotor");
 
         rightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        rightServo.setDirection(Servo.Direction.REVERSE);
+        //rightServo.setDirection(Servo.Direction.REVERSE);
 
-        leftServo = hardwareMap.servo.get("leftIntakeServo");
-        rightServo = hardwareMap.servo.get("rightIntakeServo");
+        leftIntakeServo = hardwareMap.servo.get("leftIntakeServo");
+        rightIntakeServo = hardwareMap.servo.get("rightIntakeServo");
 
         leftMotor.setPower(0);
         rightMotor.setPower(0);
 
-        leftServo.setPosition(servoPosition);
-        rightServo.setPosition(servoPosition);
+        leftIntakeServo.setPosition(leftIntakeServoPos);
+        rightIntakeServo.setPosition(rightIntakeServoPos);
 
         waitForStart();
 
-        if (opModeIsActive()) {
-            while (opModeIsActive()) {
-                // The speed factor times the y sticks position is added to motor speed and servo position
-                motorSpeed = speedFactor*gamepad1.left_stick_y;
-                servoPosition = speedFactor*gamepad1.right_stick_y;
+        while (!isStopRequested()) {
+            // The speed factor
 
-                // Update power and position
-                leftMotor.setPower(motorSpeed);
-                rightMotor.setPower(motorSpeed);
-
-                leftServo.setPosition(servoPosition);
-                rightServo.setPosition(servoPosition);
-
-                // Print Telemetry
-                telemetry.addData("Left servo position: ", leftServo.getPosition());
-                telemetry.addData("Right servo position: ", rightServo.getPosition());
-                telemetry.addData("Motor speed: ", motorSpeed);
+            if (gamepad1.b) {
+                motorSpeed = 1; // Intake assuming right motor is reversed
             }
+            else if (gamepad1.x) {
+                motorSpeed = -1; // Eject assumign right motor is reversed
+            }
+            else {
+                motorSpeed = 0;
+            }
+
+            if (gamepad1.y) {
+                leftIntakeServoPos = Range.clip(leftIntakeServoPos - 0.01, 0.13, 0.5);
+                rightIntakeServoPos = Range.clip(rightIntakeServoPos + 0.01, 0.8, 1);
+            }
+
+            if (gamepad1.a) {
+                leftIntakeServoPos = Range.clip(leftIntakeServoPos + 0.01, 0.13, 0.5);
+                rightIntakeServoPos = Range.clip(rightIntakeServoPos - 0.01, 0.8, 1);
+            }
+            leftIntakeServo.setPosition(leftIntakeServoPos);
+            rightIntakeServo.setPosition(rightIntakeServoPos);
+
+            // Update power and position
+            leftMotor.setPower(motorSpeed);
+            rightMotor.setPower(motorSpeed);
+
+            // Print Telemetry
+            telemetry.addData("Left servo position: ", leftIntakeServo.getPosition());
+            telemetry.addData("Right servo position: ", rightIntakeServo.getPosition());
+            telemetry.addData("Motor speed: ", motorSpeed);
+            telemetry.update();
         }
 
 
