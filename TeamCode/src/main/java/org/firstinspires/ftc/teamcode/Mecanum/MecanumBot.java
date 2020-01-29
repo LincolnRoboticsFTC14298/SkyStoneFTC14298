@@ -9,13 +9,13 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * This is NOT an opmode.
  *
  * This class can be used to define all the specific hardware for a single robot.
- * In this case that robot is a Pushbot.
+ * In this case that robot is a goBILDA mecanum strafing bot.
  *
  * This hardware class assumes the following device names have been configured on the robot:
  * Note:  All names are lower case and some have single spaces between words.
  *
- * Motor channel:  Left  drive motor:        "left_drive"
- * Motor channel:  Right drive motor:        "right_drive"
+ * Motor channel:  Left  drive motor:        "leftDrive"
+ * Motor channel:  Right drive motor:        "rightDrive"
  */
 public class MecanumBot {
     /* Public OpMode members. */
