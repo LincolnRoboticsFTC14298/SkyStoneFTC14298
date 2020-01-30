@@ -66,7 +66,10 @@ public class MecanumEncoderAutoTest extends LinearOpMode {
         robot.leftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot. rightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        robot.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot. rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         // Send telemetry message to indicate successful Encoder reset
         telemetry.addData("Encoder Reset",  "Starting at lf: %7d, rf: %7d, lb: %7d, rb: %7d",
@@ -117,11 +120,20 @@ public class MecanumEncoderAutoTest extends LinearOpMode {
             robot.rightBack.setTargetPosition(newRbTarget);
 
             // Turn On RUN_TO_POSITION
-            robot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            // robot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.leftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.leftBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot. rightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
             // reset the timeout time and start motion.
             runtime.reset();
-            robot.setWheelPower(Math.abs(speed));
+            // robot.setWheelPower(Math.abs(speed));
+            robot.leftFront.setPower(Math.abs(speed));
+            robot.rightFront.setPower(Math.abs(speed));
+            robot.leftBack.setPower(Math.abs(speed));
+            robot. rightBack.setPower(Math.abs(speed));
+
 
             // keep looping while we are still active, and there is time left, and both motors are running.
             // Note: We use (isBusy() && isBusy()) in the loop test, which means that when EITHER motor hits
@@ -151,10 +163,19 @@ public class MecanumEncoderAutoTest extends LinearOpMode {
             }
 
             // Stop all motion
-            robot.setWheelPower(0);
+            // robot.setWheelPower(0);
+            robot.leftFront.setPower(0);
+            robot.rightFront.setPower(0);
+            robot.leftBack.setPower(0);
+            robot.rightBack.setPower(0);
 
             // Turn off RUN_TO_POSITION
-            robot.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            // robot.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+            robot.leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            robot.rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            robot.leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            robot.rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
             //  sleep(250);   // optional pause after each move
         }
