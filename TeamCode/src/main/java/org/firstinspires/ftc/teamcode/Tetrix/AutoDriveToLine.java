@@ -55,6 +55,7 @@ import com.qualcomm.robotcore.hardware.Servo;
  */
 
 @Autonomous(name="AutoDriveToLine", group="Tetrix")
+@Disabled
 public class AutoDriveToLine extends LinearOpMode {
 
     /* Declare OpMode members. */

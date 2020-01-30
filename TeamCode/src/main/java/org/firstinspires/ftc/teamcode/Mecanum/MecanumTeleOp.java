@@ -12,9 +12,14 @@ import org.firstinspires.ftc.teamcode.Mecanum.MecanumBot;
 public class MecanumTeleOp extends LinearOpMode {
     private MecanumBot robot = new MecanumBot();
 
+    // Clean up variables since they appear in the MecanumBot class too
     private double leftIntakeServoPos = 0.5;
     private double rightIntakeServoPos = 0.8;
     private double intakeServoSpeed = 0.01;
+
+    // Variables to toggle parts on and off
+    private boolean intakeOn = false;
+    private boolean ejectOn = false;
 
     @Override
     public void runOpMode() {
@@ -70,15 +75,32 @@ public class MecanumTeleOp extends LinearOpMode {
             }
 
             // Move intake motors to spin
-            if (gamepad1.right_bumper) {
-                motorSpeed = 1; // Intake assuming right motor is reversed
+            if (gamepad1.right_bumper && !intakeOn) {
+                intakeOn = true;
+                ejectOn = false;
             }
-            else if (gamepad1.left_bumper) {
-                motorSpeed = -1; // Eject assuming right motor is reversed
+            else if (gamepad1.right_bumper && intakeOn) {
+                intakeOn = false;
+                ejectOn = false;
             }
-            else {
+            else if (gamepad1.left_bumper && !ejectOn) {
+                intakeOn = false;
+                ejectOn = true;
+            }
+            else if (gamepad1.left_bumper && ejectOn) {
+                intakeOn = false;
+                ejectOn = false;
+            }
+
+            if (intakeOn && !ejectOn) {
+                motorSpeed = 1;
+            }
+            else if (!intakeOn && ejectOn){
+                motorSpeed = -1;
+            } else {
                 motorSpeed = 0;
             }
+
             if (gamepad1.left_trigger > 0.1) {
                 clawPos = Range.clip(clawPos - 0.01, .65, 1);
             }

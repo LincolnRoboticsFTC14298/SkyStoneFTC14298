@@ -45,6 +45,7 @@ import org.openftc.easyopencv.OpenCvInternalCamera;
 import java.util.Locale;
 
 @Autonomous(name="DogeCVNav", group="Learning")
+@Disabled
 public class DogeCVNav extends LinearOpMode {
     private OpenCvCamera phoneCam;
     private SkystoneDetector skyStoneDetector;
