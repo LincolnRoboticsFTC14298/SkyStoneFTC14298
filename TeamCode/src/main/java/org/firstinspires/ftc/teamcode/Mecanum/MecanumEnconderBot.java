@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.Mecanum;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 public class MecanumEnconderBot {
     /* Declare OpMode members. */
@@ -36,15 +37,15 @@ public class MecanumEnconderBot {
                               double rfInches,
                               double lbInches,
                               double rbInches,
-                              double timeoutS, boolean opModeActive, telemetry) {
+                              double timeoutS, boolean opModeActive) {
         // Ensure that the opmode is still active
         if (opModeActive) {
 
             // Determine new target position, and pass to motor controller
-            int newLfTarget = robot.leftFront.getCurrentPosition() + (int)(lfInches * COUNTS_PER_INCH);
-            int newRfTarget = robot.rightFront.getCurrentPosition() + (int)(rfInches * COUNTS_PER_INCH);
-            int newLbTarget = robot.leftBack.getCurrentPosition() + (int)(lbInches * COUNTS_PER_INCH);
-            int newRbTarget = robot.rightBack.getCurrentPosition() + (int)(rbInches * COUNTS_PER_INCH);
+            int newLfTarget = robot.leftFront.getCurrentPosition() + (int) (lfInches * COUNTS_PER_INCH);
+            int newRfTarget = robot.rightFront.getCurrentPosition() + (int) (rfInches * COUNTS_PER_INCH);
+            int newLbTarget = robot.leftBack.getCurrentPosition() + (int) (lbInches * COUNTS_PER_INCH);
+            int newRbTarget = robot.rightBack.getCurrentPosition() + (int) (rbInches * COUNTS_PER_INCH);
 
             robot.leftFront.setTargetPosition(newLfTarget);
             robot.rightFront.setTargetPosition(newRfTarget);
@@ -73,19 +74,20 @@ public class MecanumEnconderBot {
             // always end the motion as soon as possible.
             // However, if you require that BOTH motors have finished their moves before the robot continues
             // onto the next step, use (isBusy() || isBusy()) in the loop test.
+            /*
             while (opModeActive &&
                     (runtime.seconds() < timeoutS) &&
                     (robot.leftFront.isBusy() && robot.rightFront.isBusy() && robot.leftBack.isBusy() && robot.rightBack.isBusy())
             ) {
 
                 // Display it for the driver.
-                telemetry.addData("Target",  "Running to lf: %7d, rf: %7d, lb: %7d, rb: %7d",
+                telemetry.addData("Target", "Running to lf: %7d, rf: %7d, lb: %7d, rb: %7d",
                         newLfTarget,
                         newRfTarget,
                         newLbTarget,
                         newRbTarget
                 );
-                telemetry.addData("Currently",  "Running at lf: %7d, rf: %7d, lb: %7d, rb: %7d",
+                telemetry.addData("Currently", "Running at lf: %7d, rf: %7d, lb: %7d, rb: %7d",
                         robot.leftFront.getCurrentPosition(),
                         robot.rightFront.getCurrentPosition(),
                         robot.leftBack.getCurrentPosition(),
@@ -93,6 +95,7 @@ public class MecanumEnconderBot {
                 );
                 telemetry.update();
             }
+             */
 
             // Stop all motion
             // robot.setWheelPower(0);
@@ -111,4 +114,5 @@ public class MecanumEnconderBot {
 
             //  sleep(250);   // optional pause after each move
         }
+    }
 }
