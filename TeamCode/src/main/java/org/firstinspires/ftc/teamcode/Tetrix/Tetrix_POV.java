@@ -52,7 +52,7 @@ public class Tetrix_POV extends LinearOpMode {
                 }
                 // Right Bumper closes
                 if (gamepad1.right_bumper) {
-                    ServoPosition += -ServoSpeed;
+                    ServoPosition -= ServoSpeed;
                     ServoPosition2 += ServoSpeed;
                 }
 
