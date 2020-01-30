@@ -124,7 +124,7 @@ public class MecanumEncoderAutoTest extends LinearOpMode {
             robot.leftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.leftBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot. rightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.rightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
             // reset the timeout time and start motion.
             runtime.reset();
@@ -132,8 +132,7 @@ public class MecanumEncoderAutoTest extends LinearOpMode {
             robot.leftFront.setPower(Math.abs(speed));
             robot.rightFront.setPower(Math.abs(speed));
             robot.leftBack.setPower(Math.abs(speed));
-            robot. rightBack.setPower(Math.abs(speed));
-
+            robot.rightBack.setPower(Math.abs(speed));
 
             // keep looping while we are still active, and there is time left, and both motors are running.
             // Note: We use (isBusy() && isBusy()) in the loop test, which means that when EITHER motor hits

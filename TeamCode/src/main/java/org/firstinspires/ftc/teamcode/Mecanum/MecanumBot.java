@@ -21,30 +21,30 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class MecanumBot {
     /* Public OpMode members. */
     // Wheel Motors
-    public DcMotor  leftFront   = null;
-    public DcMotor  rightFront  = null;
-    public DcMotor  leftBack    = null;
-    public DcMotor  rightBack   = null;
+    public DcMotor  leftFront;
+    public DcMotor  rightFront;
+    public DcMotor  leftBack ;
+    public DcMotor  rightBack;
 
-    public DcMotor rightIntakeMotor = null;
-    public DcMotor leftIntakeMotor = null;
+    public DcMotor rightIntakeMotor;
+    public DcMotor leftIntakeMotor;
 
-    public Servo rightIntakeServo = null;
-    public Servo leftIntakeServo = null;
+    public Servo rightIntakeServo;
+    public Servo leftIntakeServo;
 
     private double leftIntakeServoPos = 0.5; // Closed at 0.5, opens at 0.13
     private double rightIntakeServoPos = 0.8; // Closed at 0.8, opens at 1.0
     private double clawPos = 1;
 
-    public Servo rightFoundationServo = null;
-    public Servo leftFoundationServo = null;
+    public Servo rightFoundationServo;
+    public Servo leftFoundationServo;
 
-    public Servo claw = null;
+    public Servo claw;
 
-    private  DcMotor[] wheelMotors = {leftFront, rightFront, leftBack, rightBack};
+    private DcMotor[] wheelMotors = new DcMotor[4];
 
     /* local OpMode members. */
-    private HardwareMap hwMap           =  null;
+    private HardwareMap hwMap;
     private ElapsedTime period  = new ElapsedTime();
 
     /* Constructor */
@@ -54,15 +54,17 @@ public class MecanumBot {
 
     /* Sets the power of motors on the wheels to a single power */
     public void setWheelPower(double power) {
-        for (DcMotor motor : wheelMotors) {
-            motor.setPower(power);
-        }
+        leftFront.setPower(power);
+        rightFront.setPower(power);
+        leftBack.setPower(power);
+        rightBack.setPower(power);
     }
 
     public void setMode(DcMotor.RunMode mode) {
-        for (DcMotor motor : wheelMotors) {
-            motor.setMode(mode);
-        }
+        leftFront.setMode(mode);
+        rightFront.setMode(mode);
+        leftBack.setMode(mode);
+        rightBack.setMode(mode);
     }
 
     /* Initialize standard Hardware interfaces */
@@ -85,7 +87,7 @@ public class MecanumBot {
         leftIntakeServo = hwMap.get(Servo.class, "leftIntakeServo");
         rightIntakeServo = hwMap.get(Servo.class, "rightIntakeServo");
 
-        claw = hwMap.servo.get("claw");
+        claw = hwMap.get(Servo.class, "claw");
 
         rightFront.setDirection(DcMotor.Direction.REVERSE);
         rightBack.setDirection(DcMotor.Direction.REVERSE);

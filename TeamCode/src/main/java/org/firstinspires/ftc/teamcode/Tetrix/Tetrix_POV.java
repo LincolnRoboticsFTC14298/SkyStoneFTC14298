@@ -5,8 +5,10 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 @TeleOp(name = "Tetrix_POV", group="Tetrix")
+@Disabled
 public class Tetrix_POV extends LinearOpMode {
 
     private DcMotor right_drive;

@@ -29,9 +29,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="Mecanum Red Foundation Auto", group="Mecanum Op")
+@Autonomous(name="Mecanum Encoder Turn Test", group="Mecanum Op")
 // @Disabled
-public class MecRedFoundation extends LinearOpMode {
+public class MecanumEncoderTurnTest extends LinearOpMode {
 
     /* Declare OpMode members. */
     private MecanumBot robot   = new MecanumBot();   // Use a Mecanum Bot's hardware
@@ -82,25 +82,8 @@ public class MecRedFoundation extends LinearOpMode {
 
         // Step through each leg of the path,
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
+        encoderDrive(0.7,  23,  -23, 23, -23, 5.0);  // S1: Turn 90 degrees right
 
-        // Robot starts backwards because the foundation servos are at the back of the robot
-        encoderDrive(DRIVE_SPEED,  -33,  -33, -33, -33, 6.0);  // S1: Backwards 33 inches, 6 second timeout
-        // Close servos
-        robot.leftFoundationServo.setPosition(0.8);
-        robot.rightFoundationServo.setPosition(0.8);
-        sleep(2000);
-        encoderDrive(DRIVE_SPEED, 12, 12, 12, 12, 5.0);
-        encoderDrive(0.7,  -23,  23, -23, 23, 5.0);  // S1: Turn 90 degrees left
-        // Open servos
-        robot.leftFoundationServo.setPosition(0.0);
-        robot.rightFoundationServo.setPosition(0.0);
-        sleep(1000);
-
-        // Strafe "left" toward the line
-        // encoderDrive(1, -45, 45, 45, -45, 6.0);
-
-        // Drive forward toward the line
-        encoderDrive(1, 30, 30, 30, 30, 6.0);
         telemetry.addData("Path", "Complete");
         telemetry.update();
     }
@@ -138,7 +121,7 @@ public class MecRedFoundation extends LinearOpMode {
             robot.leftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.leftBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot. rightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.rightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
             // reset the timeout time and start motion.
             runtime.reset();
@@ -146,7 +129,7 @@ public class MecRedFoundation extends LinearOpMode {
             robot.leftFront.setPower(Math.abs(speed));
             robot.rightFront.setPower(Math.abs(speed));
             robot.leftBack.setPower(Math.abs(speed));
-            robot. rightBack.setPower(Math.abs(speed));
+            robot.rightBack.setPower(Math.abs(speed));
 
 
             // keep looping while we are still active, and there is time left, and both motors are running.
@@ -191,7 +174,7 @@ public class MecRedFoundation extends LinearOpMode {
             robot.leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             robot.rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-            sleep(250);   // optional pause after each move
+            //  sleep(250);   // optional pause after each move
         }
     }
 }
