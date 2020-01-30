@@ -32,8 +32,8 @@ public class MecanumBot {
     public Servo rightIntakeServo = null;
     public Servo leftIntakeServo = null;
 
-    private double rightIntakeServoPos = 0.8;
-    private double leftIntakeServoPos = 0.5;
+    private double leftIntakeServoPos = 0.5; // Closed at 0.5, opens at 0.13
+    private double rightIntakeServoPos = 0.8; // Closed at 0.8, opens at 1.0
     private double clawPos = 1;
 
     public Servo rightFoundationServo = null;
