@@ -87,7 +87,7 @@ public class MecanumEncoderBot extends MecanumBot {
     public void strafe(double speed, int direction, double dist, boolean opModeActive) {
         // If direction -1, strafe left, if 1 strafe right
         double dirDist = direction*dist;
-        encoderDrive(speed, -dirDist, dirDist, dirDist, -dirDist,0, opModeActive);
+        encoderDrive(speed, dirDist, -dirDist, -dirDist, dirDist,0, opModeActive);
     }
 
     public void encoderDrive(double speed,
