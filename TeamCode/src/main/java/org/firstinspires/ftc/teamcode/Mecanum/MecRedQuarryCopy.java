@@ -5,7 +5,6 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.Learning.OpenCVSkystoneDetector;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
@@ -46,17 +45,10 @@ import java.util.List;
 
 @Autonomous(name="MecRedQuarry", group="Mecanum Op")
 // @Disabled
-public class MecRedQuarry extends LinearOpMode {
+public class MecRedQuarryCopy extends LinearOpMode {
 
     /* Declare OpMode members. */
-    private MecanumBot robot   = new MecanumBot();   // Use a Mecanum Bot's hardware
-    private ElapsedTime     runtime = new ElapsedTime();
-
-    private static final double     COUNTS_PER_MOTOR_REV    = 383.6 ;    // eg: 5202 Series Yellow Jacket Planetary Gear Motor (13.7:1 Ratio, 435 RPM)
-    private static final double     DRIVE_GEAR_REDUCTION    = 2.0 ;     // This is < 1.0 if geared UP
-    private static final double     WHEEL_DIAMETER_INCHES   = 4.0 ;     // For figuring circumference
-    private static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
-            (WHEEL_DIAMETER_INCHES * 3.1415);
+    private MecanumEncoderBot robot   = new MecanumEncoderBot();   // Use a Mecanum Encoder Bot's hardware
     private static final double     DRIVE_SPEED             = 0.3;
     private static final double     TURN_SPEED              = 0.5;
 
@@ -98,7 +90,7 @@ public class MecRedQuarry extends LinearOpMode {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         phoneCam = new OpenCvInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
         phoneCam.openCameraDevice(); // Open camera
-        phoneCam.setPipeline(new MecRedQuarry.StageSwitchingPipeline()); // Different stages
+        phoneCam.setPipeline(new MecRedQuarryCopy.StageSwitchingPipeline()); // Different stages
         phoneCam.startStreaming(rows, cols, OpenCvCameraRotation.UPRIGHT); // Display on Robot Controller
         //width, height
         //width = height in this case, because camera is in portrait mode.
@@ -140,24 +132,34 @@ public class MecRedQuarry extends LinearOpMode {
         waitForStart();
 
         if (valLeft == 0) { // If the left block is the skystone
-            encoderDrive(DRIVE_SPEED, -3, -3, -3, -3, 2.0); // Line the claw up with the blocks instead of phone
-            encoderDrive(DRIVE_SPEED, -8, -8, -8, -8, 2.0); // Line the claw up with the leftmost block
-            encoderDrive(DRIVE_SPEED, -31, 31, 31, -31, 5.0);  // Strafe left toward a block
+            robot.straight(DRIVE_SPEED, -3, 2.0, true);
+            //encoderDrive(DRIVE_SPEED, -3, -3, -3, -3, 2.0); // Line the claw up with the blocks instead of phone
+            robot.straight(DRIVE_SPEED, -8, 2.0, true);
+            //encoderDrive(DRIVE_SPEED, -8, -8, -8, -8, 2.0); // Line the claw up with the leftmost block
+            robot.strafe(DRIVE_SPEED, -31, 5.0, true);
+            //encoderDrive(DRIVE_SPEED, -31, 31, 31, -31, 5.0);  // Strafe left toward a block
             robot.claw.setPosition(0.65); // Bring down claw servo on block
             sleep(1000);
-            encoderDrive(DRIVE_SPEED, 10, -10, -10, 10, 5.0); // Strafe right to make space to move through middle
-            encoderDrive(DRIVE_SPEED, -52, -52, -52, -52, 5.0); // Move backwards 52 inches.
+            robot.strafe(DRIVE_SPEED, 10, 5.0, true);
+            //encoderDrive(DRIVE_SPEED, 10, -10, -10, 10, 5.0); // Strafe right to make space to move through middle
+            robot.straight(DRIVE_SPEED, -52, 5.0, true);
+            //encoderDrive(DRIVE_SPEED, -52, -52, -52, -52, 5.0); // Move backwards 52 inches.
             robot.claw.setPosition(1.0); // Open Claw
             sleep(1000);
-            encoderDrive(DRIVE_SPEED, 76, 76, 76, 76, 8.0); // Go to the other stone
-            encoderDrive(DRIVE_SPEED, -10, 10, 10, -10, 5.0); // Strafe left to prepare to take the block
+            robot.straight(DRIVE_SPEED, 76, 8.0, true);
+            // encoderDrive(DRIVE_SPEED, 76, 76, 76, 76, 8.0); // Go to the other stone
+            robot.strafe(DRIVE_SPEED, -10, 5.0, true);
+            //encoderDrive(DRIVE_SPEED, -10, 10, 10, -10, 5.0); // Strafe left to prepare to take the block
             robot.claw.setPosition(0.65); // Bring down claw servo on block
             sleep(1000);
-            encoderDrive(DRIVE_SPEED, 10, -10, -10, 10, 5.0); // Strafe right to make space to move through middle
-            encoderDrive(DRIVE_SPEED, -76, -76, -76, -76, 8.0); // Move backwards 76 in.
+            robot.strafe(DRIVE_SPEED, 10, 5.0, true);
+            //encoderDrive(DRIVE_SPEED, 10, -10, -10, 10, 5.0); // Strafe right to make space to move through middle
+            robot.straight(DRIVE_SPEED -76, 8.0, true);
+            //encoderDrive(DRIVE_SPEED, -76, -76, -76, -76, 8.0); // Move backwards 76 in.
             robot.claw.setPosition(1.0); // Open Claw
             sleep(1000);
-            encoderDrive(DRIVE_SPEED, 22, 22, 22, 22, 5.0); // Park
+            robot.strafe(DRIVE_SPEED, 22, 5.0, true)
+            //encoderDrive(DRIVE_SPEED, 22, 22, 22, 22, 5.0); // Park
             telemetry.addData("Path", "Complete");
             telemetry.update();
         }
@@ -226,8 +228,8 @@ public class MecRedQuarry extends LinearOpMode {
             yCbCr
         }
 
-        private MecRedQuarry.StageSwitchingPipeline.Stage stageToRenderToViewport = MecRedQuarry.StageSwitchingPipeline.Stage.detection;
-        private MecRedQuarry.StageSwitchingPipeline.Stage[] stages = MecRedQuarry.StageSwitchingPipeline.Stage.values();
+        private MecRedQuarryCopy.StageSwitchingPipeline.Stage stageToRenderToViewport = MecRedQuarryCopy.StageSwitchingPipeline.Stage.detection;
+        private MecRedQuarryCopy.StageSwitchingPipeline.Stage[] stages = MecRedQuarryCopy.StageSwitchingPipeline.Stage.values();
 
         // When you tap on the screen, the screen changes from its detection methods
         @Override
@@ -362,85 +364,5 @@ public class MecRedQuarry extends LinearOpMode {
      *  1) Move gets to the desired position
      *  2) Move runs out of time
      *  3) Driver stops the opmode running.
-     */
-    private void encoderDrive(double speed,
-                             double lfInches,
-                             double rfInches,
-                             double lbInches,
-                             double rbInches,
-                             double timeoutS) {
-        // Ensure that the opmode is still active
-        if (opModeIsActive()) {
 
-            // Determine new target position, and pass to motor controller
-            int newLfTarget = robot.leftFront.getCurrentPosition() + (int)(lfInches * COUNTS_PER_INCH);
-            int newRfTarget = robot.rightFront.getCurrentPosition() + (int)(rfInches * COUNTS_PER_INCH);
-            int newLbTarget = robot.leftBack.getCurrentPosition() + (int)(lbInches * COUNTS_PER_INCH);
-            int newRbTarget = robot.rightBack.getCurrentPosition() + (int)(rbInches * COUNTS_PER_INCH);
-
-            robot.leftFront.setTargetPosition(newLfTarget);
-            robot.rightFront.setTargetPosition(newRfTarget);
-            robot.leftBack.setTargetPosition(newLbTarget);
-            robot.rightBack.setTargetPosition(newRbTarget);
-
-            // Turn On RUN_TO_POSITION
-            // robot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.leftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.leftBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.rightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-            // reset the timeout time and start motion.
-            runtime.reset();
-            // robot.setWheelPower(Math.abs(speed));
-            robot.leftFront.setPower(Math.abs(speed));
-            robot.rightFront.setPower(Math.abs(speed));
-            robot.leftBack.setPower(Math.abs(speed));
-            robot.rightBack.setPower(Math.abs(speed));
-
-            // keep looping while we are still active, and there is time left, and both motors are running.
-            // Note: We use (isBusy() && isBusy()) in the loop test, which means that when EITHER motor hits
-            // its target position, the motion will stop.  This is "safer" in the event that the robot will
-            // always end the motion as soon as possible.
-            // However, if you require that BOTH motors have finished their moves before the robot continues
-            // onto the next step, use (isBusy() || isBusy()) in the loop test.
-            while (opModeIsActive() &&
-                    (runtime.seconds() < timeoutS) &&
-                    (robot.leftFront.isBusy() && robot.rightFront.isBusy() && robot.leftBack.isBusy() && robot.rightBack.isBusy())
-            ) {
-
-                // Display it for the driver.
-                telemetry.addData("Target",  "Running to lf: %7d, rf: %7d, lb: %7d, rb: %7d",
-                        newLfTarget,
-                        newRfTarget,
-                        newLbTarget,
-                        newRbTarget
-                );
-                telemetry.addData("Currently",  "Running at lf: %7d, rf: %7d, lb: %7d, rb: %7d",
-                        robot.leftFront.getCurrentPosition(),
-                        robot.rightFront.getCurrentPosition(),
-                        robot.leftBack.getCurrentPosition(),
-                        robot.rightBack.getCurrentPosition()
-                );
-                telemetry.update();
-            }
-
-            // Stop all motion
-            // robot.setWheelPower(0);
-            robot.leftFront.setPower(0);
-            robot.rightFront.setPower(0);
-            robot.leftBack.setPower(0);
-            robot.rightBack.setPower(0);
-
-            // Turn off RUN_TO_POSITION
-            // robot.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-            robot.leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            robot.rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            robot.leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            robot.rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-            //  sleep(250);   // optional pause after each move
-        }
-    }
 }
