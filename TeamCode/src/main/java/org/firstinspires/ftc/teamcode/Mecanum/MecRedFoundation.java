@@ -89,18 +89,24 @@ public class MecRedFoundation extends LinearOpMode {
         robot.leftFoundationServo.setPosition(0.8);
         robot.rightFoundationServo.setPosition(0.8);
         sleep(2000);
-        encoderDrive(DRIVE_SPEED, 12, 12, 12, 12, 5.0);
-        encoderDrive(0.7,  -23,  23, -23, 23, 5.0);  // S1: Turn 90 degrees left
+        encoderDrive(DRIVE_SPEED, 30, 30, 30, 30, 6.0);
         // Open servos
         robot.leftFoundationServo.setPosition(0.0);
         robot.rightFoundationServo.setPosition(0.0);
         sleep(1000);
 
-        // Strafe "left" toward the line
-        // encoderDrive(1, -45, 45, 45, -45, 6.0);
+        // Strafe "left" just outside the foundation
+        encoderDrive(DRIVE_SPEED, -25, 25, 25, -25, 5.0);
 
-        // Drive forward toward the line
-        encoderDrive(1, 30, 30, 30, 30, 6.0);
+        // Move backwards 18 inches to be right next to the foundation
+        encoderDrive(DRIVE_SPEED, -18, -18, -18, -18, 5.0);
+
+        // Strafe right to put foundation in
+        encoderDrive(DRIVE_SPEED, 12, -12, -12, 12, 5.0);
+
+        // Strafe "left" toward the line
+        encoderDrive(1, -35, 35, 35, -35, 6.0);
+
         telemetry.addData("Path", "Complete");
         telemetry.update();
     }
