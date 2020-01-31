@@ -4,7 +4,6 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 public class MecanumEncoderBot extends MecanumBot {
     /* Declare OpMode members. */
@@ -15,12 +14,8 @@ public class MecanumEncoderBot extends MecanumBot {
     private static final double     WHEEL_DIAMETER_INCHES   = 4.0 ;     // For figuring circumference
     private static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * 3.1415);
-    private static final double     DRIVE_SPEED             = 0.3;
-    private static final double     TURN_SPEED              = 0.5;
+    private static final double     RADIUS = 5;
 
-    private double leftIntakeServoPos = 0.5; // Closed at 0.5, opens at 0.13
-    private double rightIntakeServoPos = 0.8; // Closed at 0.8, opens at 1.0
-    private double clawPos = 1;
 
     @Override
     public void init(HardwareMap hwMap) {
@@ -47,47 +42,62 @@ public class MecanumEncoderBot extends MecanumBot {
         rightIntakeMotor.setDirection(DcMotor.Direction.REVERSE);
 
         // Set all motors to zero power
-        // this.setWheelPower(0);
+        setPower(0);
+        /*
         leftFront.setPower(0);
         rightFront.setPower(0);
         leftBack.setPower(0);
         rightBack.setPower(0);
+        */
         rightIntakeMotor.setPower(0);
         leftIntakeMotor.setPower(0);
 
 
         // Set all motors to RUN_USING_ENCODERS if encoders are installed.
-        // this.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
+        setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        /*
         leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        */
 
         // Set the Servo to its starting positions
         leftIntakeServo.setPosition(leftIntakeServoPos);
         rightIntakeServo.setPosition(rightIntakeServoPos);
         claw.setPosition(clawPos);
 
+        setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        /*
         leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         leftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        */
 
+        setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        /*
         leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        */
     }
 
-    public void straight(double speed, double dist, boolean opModeActive) {
-        encoderDrive(speed, dist, dist, dist, dist, 0, opModeActive);
+    public void straight(double speed, double dist, double timeout, boolean opModeActive) {
+        encoderDrive(speed, dist, dist, dist, dist, timeout, opModeActive);
     }
 
-    public void strafe(double speed, int direction, double dist, boolean opModeActive) {
-        // If direction -1, strafe left, if 1 strafe right
-        double dirDist = direction*dist;
-        encoderDrive(speed, dirDist, -dirDist, -dirDist, dirDist,0, opModeActive);
+    public void strafe(double speed, double dist, double timeout, boolean opModeActive) {
+        // If dist is neg, it strafes left, if pos, right
+        encoderDrive(speed, dist, -dist, -dist, dist, timeout, opModeActive);
+    }
+
+    public void rotate(double speed, double angle, double timeout, boolean opModeActive) {
+        // Negative angle is clockwise
+        // Distance is simply the circumfrance traveled
+        double circum = 2*Math.PI*RADIUS*angle/360; // Full circumfrance times ratio of angle
+        encoderDrive(speed, -circum, circum, -circum, circum, timeout, opModeActive);
     }
 
     public void encoderDrive(double speed,
@@ -111,19 +121,23 @@ public class MecanumEncoderBot extends MecanumBot {
             rightBack.setTargetPosition(newRbTarget);
 
             // Turn On RUN_TO_POSITION
-            // robot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            /*
             leftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             leftBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             rightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+             */
 
             // reset the timeout time and start motion.
             runtime.reset();
-            // robot.setWheelPower(Math.abs(speed));
+            setPower(Math.abs(speed));
+            /*
             leftFront.setPower(Math.abs(speed));
             rightFront.setPower(Math.abs(speed));
             leftBack.setPower(Math.abs(speed));
-            rightBack.setPower(Math.abs(speed));
+            rightBack.setPower(Math.abs(speed))
+            */
 
 
             // keep looping while we are still active, and there is time left, and both motors are running.
@@ -132,12 +146,12 @@ public class MecanumEncoderBot extends MecanumBot {
             // always end the motion as soon as possible.
             // However, if you require that BOTH motors have finished their moves before the robot continues
             // onto the next step, use (isBusy() || isBusy()) in the loop test.
-            /*
+
             while (opModeActive &&
                     (runtime.seconds() < timeoutS) &&
-                    (robot.leftFront.isBusy() && robot.rightFront.isBusy() && robot.leftBack.isBusy() && robot.rightBack.isBusy())
+                    (leftFront.isBusy() && rightFront.isBusy() && leftBack.isBusy() && rightBack.isBusy())
             ) {
-
+                /*
                 // Display it for the driver.
                 telemetry.addData("Target", "Running to lf: %7d, rf: %7d, lb: %7d, rb: %7d",
                         newLfTarget,
@@ -151,24 +165,27 @@ public class MecanumEncoderBot extends MecanumBot {
                         robot.leftBack.getCurrentPosition(),
                         robot.rightBack.getCurrentPosition()
                 );
-                telemetry.update();
+                telemetry.update();*/
             }
-             */
+
 
             // Stop all motion
-            // robot.setWheelPower(0);
+            setPower(0);
+            /*
             leftFront.setPower(0);
             rightFront.setPower(0);
             leftBack.setPower(0);
             rightBack.setPower(0);
+            */
 
             // Turn off RUN_TO_POSITION
-            // robot.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
+            setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            /*
             leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            */
 
             //  sleep(250);   // optional pause after each move
         }

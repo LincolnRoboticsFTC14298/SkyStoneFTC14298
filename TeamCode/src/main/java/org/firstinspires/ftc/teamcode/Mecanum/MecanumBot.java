@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.Mecanum;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -23,7 +22,7 @@ public class MecanumBot {
     // Wheel Motors
     public DcMotor  leftFront;
     public DcMotor  rightFront;
-    public DcMotor  leftBack ;
+    public DcMotor  leftBack;
     public DcMotor  rightBack;
 
     public DcMotor rightIntakeMotor;
@@ -32,9 +31,9 @@ public class MecanumBot {
     public Servo rightIntakeServo;
     public Servo leftIntakeServo;
 
-    private double leftIntakeServoPos = 0.5; // Closed at 0.5, opens at 0.13
-    private double rightIntakeServoPos = 0.8; // Closed at 0.8, opens at 1.0
-    private double clawPos = 1; // Up at 1, down at 0.65
+    public double leftIntakeServoPos = 0.5; // Closed at 0.5, opens at 0.13
+    public double rightIntakeServoPos = 0.8; // Closed at 0.8, opens at 1.0
+    public double clawPos = 1; // Up at 1, down at 0.65
 
     public Servo rightFoundationServo;
     public Servo leftFoundationServo;
@@ -53,7 +52,7 @@ public class MecanumBot {
     }
 
     /* Sets the power of motors on the wheels to a single power */
-    public void setWheelPower(double power) {
+    public void setPower(double power) {
         leftFront.setPower(power);
         rightFront.setPower(power);
         leftBack.setPower(power);
@@ -95,22 +94,25 @@ public class MecanumBot {
         rightIntakeMotor.setDirection(DcMotor.Direction.REVERSE);
 
         // Set all motors to zero power
-        // this.setWheelPower(0);
+        setPower(0);
+        /*
         leftFront.setPower(0);
         rightFront.setPower(0);
         leftBack.setPower(0);
         rightBack.setPower(0);
+        */
         rightIntakeMotor.setPower(0);
         leftIntakeMotor.setPower(0);
 
 
         // Set all motors to RUN_USING_ENCODERS if encoders are installed.
         // this.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
+        /*
         leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        */
 
         // Set the Servo to its starting positions
         leftIntakeServo.setPosition(leftIntakeServoPos);
