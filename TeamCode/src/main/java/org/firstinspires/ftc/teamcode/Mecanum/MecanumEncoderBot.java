@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-public class MecanumEnconderBot extends MecanumBot {
+public class MecanumEncoderBot extends MecanumBot {
     /* Declare OpMode members. */
     private ElapsedTime runtime = new ElapsedTime();
 
