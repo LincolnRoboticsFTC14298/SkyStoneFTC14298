@@ -81,13 +81,13 @@ public class MecanumEncoderBot extends MecanumBot {
     }
 
     public void straight(double speed, double dist, boolean opModeActive) {
-        encoderDrive(speed, dist, dist, dist, dist, 0, opModeActive);
+        encoderDrive(speed, dist, dist, dist, dist, 100, opModeActive);
     }
 
     public void strafe(double speed, int direction, double dist, boolean opModeActive) {
         // If direction -1, strafe left, if 1 strafe right
         double dirDist = direction*dist;
-        encoderDrive(speed, dirDist, -dirDist, -dirDist, dirDist,0, opModeActive);
+        encoderDrive(speed, dirDist, -dirDist, -dirDist, dirDist,100, opModeActive);
     }
 
     public void encoderDrive(double speed,
@@ -132,12 +132,12 @@ public class MecanumEncoderBot extends MecanumBot {
             // always end the motion as soon as possible.
             // However, if you require that BOTH motors have finished their moves before the robot continues
             // onto the next step, use (isBusy() || isBusy()) in the loop test.
-            /*
+
             while (opModeActive &&
                     (runtime.seconds() < timeoutS) &&
                     (robot.leftFront.isBusy() && robot.rightFront.isBusy() && robot.leftBack.isBusy() && robot.rightBack.isBusy())
             ) {
-
+                /*
                 // Display it for the driver.
                 telemetry.addData("Target", "Running to lf: %7d, rf: %7d, lb: %7d, rb: %7d",
                         newLfTarget,
@@ -151,9 +151,9 @@ public class MecanumEncoderBot extends MecanumBot {
                         robot.leftBack.getCurrentPosition(),
                         robot.rightBack.getCurrentPosition()
                 );
-                telemetry.update();
+                telemetry.update();*/
             }
-             */
+
 
             // Stop all motion
             // robot.setWheelPower(0);
