@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 
 // Robot starts with claws facing the skyblocks and intake facing away from bridge
-@Autonomous(name="Mecanum Encoder Test", group="Mecanum Op")
+@Autonomous(name="Mecanum Encoder To Line", group="Mecanum Op")
 //@Disabled
 public class ToLine extends LinearOpMode {
     private MecanumEncoderBot robot   = new MecanumEncoderBot();   // Use a Mecanum Encoder Bot's hardware
