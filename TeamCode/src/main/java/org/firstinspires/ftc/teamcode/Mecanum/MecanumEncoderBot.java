@@ -135,7 +135,7 @@ public class MecanumEncoderBot extends MecanumBot {
 
             while (opModeActive &&
                     (runtime.seconds() < timeoutS) &&
-                    (robot.leftFront.isBusy() && robot.rightFront.isBusy() && robot.leftBack.isBusy() && robot.rightBack.isBusy())
+                    (leftFront.isBusy() && rightFront.isBusy() && leftBack.isBusy() && rightBack.isBusy())
             ) {
                 /*
                 // Display it for the driver.
