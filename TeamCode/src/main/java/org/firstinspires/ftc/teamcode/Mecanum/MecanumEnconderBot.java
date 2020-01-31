@@ -2,12 +2,12 @@ package org.firstinspires.ftc.teamcode.Mecanum;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-public class MecanumEnconderBot {
+public class MecanumEnconderBot extends MecanumBot {
     /* Declare OpMode members. */
-    private MecanumBot robot   = new MecanumBot();   // Use a Mecanum Bot's hardware
     private ElapsedTime runtime = new ElapsedTime();
 
     private static final double     COUNTS_PER_MOTOR_REV    = 383.6 ;    // eg: 5202 Series Yellow Jacket Planetary Gear Motor (13.7:1 Ratio, 435 RPM)
@@ -18,21 +18,69 @@ public class MecanumEnconderBot {
     private static final double     DRIVE_SPEED             = 0.3;
     private static final double     TURN_SPEED              = 0.5;
 
-    private void init(HardwareMap hwMap) {
-        robot.init(hwMap);
+    private double leftIntakeServoPos = 0.5; // Closed at 0.5, opens at 0.13
+    private double rightIntakeServoPos = 0.8; // Closed at 0.8, opens at 1.0
+    private double clawPos = 1;
 
-        robot.leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.leftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot. rightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    @Override
+    public void init(HardwareMap hwMap) {
+        // Define and Initialize Motors
+        leftFront = hwMap.get(DcMotor.class, "leftFront");
+        rightFront = hwMap.get(DcMotor.class, "rightFront");
+        leftBack = hwMap.get(DcMotor.class, "leftBack");
+        rightBack = hwMap.get(DcMotor.class, "rightBack");
 
-        robot.leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot. rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightIntakeMotor = hwMap.get(DcMotor.class, "rightIntakeMotor");
+        leftIntakeMotor = hwMap.get(DcMotor.class, "leftIntakeMotor");
+
+        leftFoundationServo = hwMap.get(Servo.class, "leftFoundationServo");
+        rightFoundationServo = hwMap.get(Servo.class, "rightFoundationServo");
+
+        leftIntakeServo = hwMap.get(Servo.class, "leftIntakeServo");
+        rightIntakeServo = hwMap.get(Servo.class, "rightIntakeServo");
+
+        claw = hwMap.get(Servo.class, "claw");
+
+        rightFront.setDirection(DcMotor.Direction.REVERSE);
+        rightBack.setDirection(DcMotor.Direction.REVERSE);
+
+        rightIntakeMotor.setDirection(DcMotor.Direction.REVERSE);
+
+        // Set all motors to zero power
+        // this.setWheelPower(0);
+        leftFront.setPower(0);
+        rightFront.setPower(0);
+        leftBack.setPower(0);
+        rightBack.setPower(0);
+        rightIntakeMotor.setPower(0);
+        leftIntakeMotor.setPower(0);
+
+
+        // Set all motors to RUN_USING_ENCODERS if encoders are installed.
+        // this.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        // Set the Servo to its starting positions
+        leftIntakeServo.setPosition(leftIntakeServoPos);
+        rightIntakeServo.setPosition(rightIntakeServoPos);
+        claw.setPosition(clawPos);
+
+        leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
-    private void encoderDrive(double speed,
+    public void encoderDrive(double speed,
                               double lfInches,
                               double rfInches,
                               double lbInches,
@@ -42,30 +90,30 @@ public class MecanumEnconderBot {
         if (opModeActive) {
 
             // Determine new target position, and pass to motor controller
-            int newLfTarget = robot.leftFront.getCurrentPosition() + (int) (lfInches * COUNTS_PER_INCH);
-            int newRfTarget = robot.rightFront.getCurrentPosition() + (int) (rfInches * COUNTS_PER_INCH);
-            int newLbTarget = robot.leftBack.getCurrentPosition() + (int) (lbInches * COUNTS_PER_INCH);
-            int newRbTarget = robot.rightBack.getCurrentPosition() + (int) (rbInches * COUNTS_PER_INCH);
+            int newLfTarget = leftFront.getCurrentPosition() + (int) (lfInches * COUNTS_PER_INCH);
+            int newRfTarget = rightFront.getCurrentPosition() + (int) (rfInches * COUNTS_PER_INCH);
+            int newLbTarget = leftBack.getCurrentPosition() + (int) (lbInches * COUNTS_PER_INCH);
+            int newRbTarget = rightBack.getCurrentPosition() + (int) (rbInches * COUNTS_PER_INCH);
 
-            robot.leftFront.setTargetPosition(newLfTarget);
-            robot.rightFront.setTargetPosition(newRfTarget);
-            robot.leftBack.setTargetPosition(newLbTarget);
-            robot.rightBack.setTargetPosition(newRbTarget);
+            leftFront.setTargetPosition(newLfTarget);
+            rightFront.setTargetPosition(newRfTarget);
+            leftBack.setTargetPosition(newLbTarget);
+            rightBack.setTargetPosition(newRbTarget);
 
             // Turn On RUN_TO_POSITION
             // robot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.leftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.leftBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.rightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            leftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            leftBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            rightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
             // reset the timeout time and start motion.
             runtime.reset();
             // robot.setWheelPower(Math.abs(speed));
-            robot.leftFront.setPower(Math.abs(speed));
-            robot.rightFront.setPower(Math.abs(speed));
-            robot.leftBack.setPower(Math.abs(speed));
-            robot.rightBack.setPower(Math.abs(speed));
+            leftFront.setPower(Math.abs(speed));
+            rightFront.setPower(Math.abs(speed));
+            leftBack.setPower(Math.abs(speed));
+            rightBack.setPower(Math.abs(speed));
 
 
             // keep looping while we are still active, and there is time left, and both motors are running.
@@ -99,18 +147,18 @@ public class MecanumEnconderBot {
 
             // Stop all motion
             // robot.setWheelPower(0);
-            robot.leftFront.setPower(0);
-            robot.rightFront.setPower(0);
-            robot.leftBack.setPower(0);
-            robot.rightBack.setPower(0);
+            leftFront.setPower(0);
+            rightFront.setPower(0);
+            leftBack.setPower(0);
+            rightBack.setPower(0);
 
             // Turn off RUN_TO_POSITION
             // robot.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-            robot.leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            robot.rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            robot.leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            robot.rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
             //  sleep(250);   // optional pause after each move
         }
