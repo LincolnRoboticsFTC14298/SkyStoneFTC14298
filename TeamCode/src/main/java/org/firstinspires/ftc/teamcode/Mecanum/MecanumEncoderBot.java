@@ -80,6 +80,16 @@ public class MecanumEncoderBot extends MecanumBot {
         rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
+    public void straight(double speed, double dist, boolean opModeActive) {
+        encoderDrive(speed, dist, dist, dist, dist, 0, opModeActive);
+    }
+
+    public void strafe(double speed, int direction, double dist, boolean opModeActive) {
+        // If direction -1, strafe left, if 1 strafe right
+        double dirDist = direction*dist;
+        encoderDrive(speed, -dirDist, dirDist, dirDist, -dirDist,0, opModeActive);
+    }
+
     public void encoderDrive(double speed,
                               double lfInches,
                               double rfInches,

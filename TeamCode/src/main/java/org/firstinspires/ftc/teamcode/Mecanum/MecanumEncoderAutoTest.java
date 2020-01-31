@@ -48,6 +48,7 @@ public class MecanumEncoderAutoTest extends LinearOpMode {
     private static final double     DRIVE_SPEED             = 0.3;
     private static final double     TURN_SPEED              = 0.5;
 
+
     @Override
     public void runOpMode() {
 
