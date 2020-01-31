@@ -1,10 +1,7 @@
 package org.firstinspires.ftc.teamcode.Mecanum;
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
 
 // Robot starts with claws facing the skyblocks and intake facing away from bridge
@@ -18,8 +15,8 @@ public class ToLine extends LinearOpMode {
     public void runOpMode() {
         robot.init(hardwareMap);
         waitForStart();
-        robot.strafe(DRIVE_SPEED, -1, 10, opModeIsActive());
-        robot.straight(DRIVE_SPEED, 33, opModeIsActive());
+        robot.strafe(DRIVE_SPEED, -10, 5, opModeIsActive());
+        robot.straight(DRIVE_SPEED, 33, 5, opModeIsActive());
 
     }
 
