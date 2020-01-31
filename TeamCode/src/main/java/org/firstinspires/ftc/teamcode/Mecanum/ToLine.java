@@ -15,8 +15,8 @@ public class ToLine extends LinearOpMode {
     public void runOpMode() {
         robot.init(hardwareMap);
         waitForStart();
-        robot.strafe(DRIVE_SPEED, -10, 5, opModeIsActive());
-        robot.straight(DRIVE_SPEED, 33, 5, opModeIsActive());
+        robot.strafe(DRIVE_SPEED, -25, 5, opModeIsActive());
+        robot.straight(DRIVE_SPEED, -33, 5, opModeIsActive());
 
     }
 
