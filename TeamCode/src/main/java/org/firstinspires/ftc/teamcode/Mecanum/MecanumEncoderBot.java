@@ -14,7 +14,7 @@ public class MecanumEncoderBot extends MecanumBot {
     private static final double     WHEEL_DIAMETER_INCHES   = 4.0 ;     // For figuring circumference
     private static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * 3.1415);
-    private static final double     RADIUS = 5;
+    private static final double     RADIUS = Math.sqrt(13*13 + 15*15); // 13 in by 15 in
 
 
     @Override
@@ -90,6 +90,8 @@ public class MecanumEncoderBot extends MecanumBot {
 
     public void strafe(double speed, double dist, double timeout, boolean opModeActive) {
         // If dist is neg, it strafes left, if pos, right
+        dist *= 10/9;
+        // Adjust for friction. Found that the strafe was off by a tenth
         encoderDrive(speed, dist, -dist, -dist, dist, timeout, opModeActive);
     }
 
