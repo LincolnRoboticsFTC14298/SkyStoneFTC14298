@@ -136,19 +136,117 @@ public class MecRedQuarry extends LinearOpMode {
         telemetry.update();
 
         // Wait for the game to start (driver presses PLAY)
+        // Assume that the phone lines up with the middle block to detect the blocks
         waitForStart();
-
-        if (valMid == 0) {
+        /*
+        // For a single block auto
+        if (valLeft == 0) { // If the left block is the skystone
+            encoderDrive(DRIVE_SPEED, -3, -3, -3, -3, 2.0); // Line the claw up with the blocks instead of phone
+            encoderDrive(DRIVE_SPEED, -8, -8, -8, -8, 2.0); // Line the claw up with the leftmost block
+            encoderDrive(DRIVE_SPEED, -31, 31, 31, -31, 5.0);  // Strafe left toward a block
+            robot.claw.setPosition(0.65); // Bring down claw servo on block
+            sleep(1000);
+            encoderDrive(DRIVE_SPEED, 10, -10, -10, 10, 5.0); // Strafe right to make space to move through middle
+            encoderDrive(DRIVE_SPEED, -52, -52, -52, -52, 5.0); // Move backwards 52 inches.
+            robot.claw.setPosition(1.0); // Open Claw
+            sleep(1000);
+            encoderDrive(DRIVE_SPEED, 22, 22, 22, 22, 5.0); // Park
+            telemetry.addData("Path", "Complete");
+            telemetry.update();
+        }
+        else if (valMid == 0) { // If the middle block has the skystone
             // Step through each leg of the path,
             // Note: Reverse movement is obtained by setting a negative distance (not speed)
-            encoderDrive(DRIVE_SPEED, -32, 32, 32, -32, 5.0);  // Strage
-            robot.claw.setPosition(0.65);
+            encoderDrive(DRIVE_SPEED, -3, -3, -3, -3, 2.0); // Line the claw up with the block
+            encoderDrive(DRIVE_SPEED, -31, 31, 31, -31, 5.0);  // Strafe left toward a block
+            robot.claw.setPosition(0.65); // Bring down claw servo on block
             sleep(1000);
-            encoderDrive(DRIVE_SPEED, 10, -10, -10, 10, 5.0);
-            encoderDrive(DRIVE_SPEED, -60, -60, -60, -60, 5.0);
-            robot.claw.setPosition(1.0);
+            encoderDrive(DRIVE_SPEED, 10, -10, -10, 10, 5.0); // Strafe right to make space to move through middle
+            encoderDrive(DRIVE_SPEED, -60, -60, -60, -60, 5.0); // Move backwards 5 ft.
+            robot.claw.setPosition(1.0); // Open Claw
             sleep(1000);
-            encoderDrive(DRIVE_SPEED, 22, 22, 22, 22, 5.0);
+            encoderDrive(DRIVE_SPEED, 22, 22, 22, 22, 5.0); // Park
+            telemetry.addData("Path", "Complete");
+            telemetry.update();
+        }
+        else if (valRight == 0) {
+            encoderDrive(DRIVE_SPEED, -3, -3, -3, -3, 2.0); // Line the claw up with the block
+            encoderDrive(DRIVE_SPEED, 8, 8, 8, 8, 2.0); // Line the claw up with the leftmost block
+            encoderDrive(DRIVE_SPEED, -31, 31, 31, -31, 5.0);  // Strafe left toward a block
+            robot.claw.setPosition(0.65); // Bring down claw servo on block
+            sleep(1000);
+            encoderDrive(DRIVE_SPEED, 10, -10, -10, 10, 5.0); // Strafe right to make space to move through middle
+            encoderDrive(DRIVE_SPEED, -62, -62, -62, -62, 5.0); // Move backwards 62 inches.
+            robot.claw.setPosition(1.0); // Open Claw
+            sleep(1000);
+            encoderDrive(DRIVE_SPEED, 22, 22, 22, 22, 5.0); // Park
+            telemetry.addData("Path", "Complete");
+            telemetry.update();
+        }*/
+        if (valLeft == 0) { // If the left block is the skystone
+            encoderDrive(DRIVE_SPEED, -3, -3, -3, -3, 2.0); // Line the claw up with the blocks instead of phone
+            encoderDrive(DRIVE_SPEED, -8, -8, -8, -8, 2.0); // Line the claw up with the leftmost block
+            encoderDrive(DRIVE_SPEED, -31, 31, 31, -31, 5.0);  // Strafe left toward a block
+            robot.claw.setPosition(0.65); // Bring down claw servo on block
+            sleep(1000);
+            encoderDrive(DRIVE_SPEED, 10, -10, -10, 10, 5.0); // Strafe right to make space to move through middle
+            encoderDrive(DRIVE_SPEED, -52, -52, -52, -52, 5.0); // Move backwards 52 inches.
+            robot.claw.setPosition(1.0); // Open Claw
+            sleep(1000);
+            encoderDrive(DRIVE_SPEED, 76, 76, 76, 76, 8.0); // Go to the other stone
+            encoderDrive(DRIVE_SPEED, -10, 10, 10, -10, 5.0); // Strafe left to prepare to take the block
+            robot.claw.setPosition(0.65); // Bring down claw servo on block
+            sleep(1000);
+            encoderDrive(DRIVE_SPEED, 10, -10, -10, 10, 5.0); // Strafe right to make space to move through middle
+            encoderDrive(DRIVE_SPEED, -76, -76, -76, -76, 8.0); // Move backwards 76 in.
+            robot.claw.setPosition(1.0); // Open Claw
+            sleep(1000);
+            encoderDrive(DRIVE_SPEED, 22, 22, 22, 22, 5.0); // Park
+            telemetry.addData("Path", "Complete");
+            telemetry.update();
+        }
+        else if (valMid == 0) { // If the middle block has the skystone
+            // Step through each leg of the path,
+            // Note: Reverse movement is obtained by setting a negative distance (not speed)
+            encoderDrive(DRIVE_SPEED, -3, -3, -3, -3, 2.0); // Line the claw up with the block
+            encoderDrive(DRIVE_SPEED, -31, 31, 31, -31, 5.0);  // Strafe left toward a block
+            robot.claw.setPosition(0.65); // Bring down claw servo on block
+            sleep(1000);
+            encoderDrive(DRIVE_SPEED, 10, -10, -10, 10, 5.0); // Strafe right to make space to move through middle
+            encoderDrive(DRIVE_SPEED, -60, -60, -60, -60, 8.0); // Move backwards 5 ft.
+            robot.claw.setPosition(1.0); // Open Claw
+            sleep(1000);
+            encoderDrive(DRIVE_SPEED, 84, 84, 84, 84, 9.0); // Go to the other stone
+            encoderDrive(DRIVE_SPEED, -10, 10, 10, -10, 5.0); // Strafe left to prepare to take the block
+            robot.claw.setPosition(0.65); // Bring down claw servo on block
+            sleep(1000);
+            encoderDrive(DRIVE_SPEED, 10, -10, -10, 10, 5.0); // Strafe right to make space to move through middle
+            encoderDrive(DRIVE_SPEED, -84, -84, -84, -84, 9.0); // Move backwards 84 in.
+            robot.claw.setPosition(1.0); // Open Claw
+            sleep(1000);
+            encoderDrive(DRIVE_SPEED, 22, 22, 22, 22, 5.0); // Park
+            telemetry.addData("Path", "Complete");
+            telemetry.update();
+        }
+        else if (valRight == 0) { // If the right block is the skystone, score with it and a regular stone
+            encoderDrive(DRIVE_SPEED, -3, -3, -3, -3, 2.0); // Line the claw up with the block
+            encoderDrive(DRIVE_SPEED, 8, 8, 8, 8, 2.0); // Line the claw up with the leftmost block
+            encoderDrive(DRIVE_SPEED, -31, 31, 31, -31, 5.0);  // Strafe left toward a block
+            robot.claw.setPosition(0.65); // Bring down claw servo on block
+            sleep(1000);
+            encoderDrive(DRIVE_SPEED, 10, -10, -10, 10, 5.0); // Strafe right to make space to move through middle
+            encoderDrive(DRIVE_SPEED, -62, -62, -62, -62, 5.0); // Move backwards 62 inches.
+            robot.claw.setPosition(1.0); // Open Claw
+            sleep(1000);
+            encoderDrive(DRIVE_SPEED, 46, 46, 46, 46, 9.0); // Go to the other stone
+            encoderDrive(DRIVE_SPEED, -10, 10, 10, -10, 5.0); // Strafe left to prepare to take the block
+            robot.claw.setPosition(0.65); // Bring down claw servo on block
+            sleep(1000);
+            encoderDrive(DRIVE_SPEED, 10, -10, -10, 10, 5.0); // Strafe right to make space to move through middle
+            encoderDrive(DRIVE_SPEED, -46, -46, -46, -46, 9.0); // Move backwards 46 in.
+            robot.claw.setPosition(1.0); // Open Claw
+            sleep(1000);
+            encoderDrive(DRIVE_SPEED, 22, 22, 22, 22, 5.0); // Park
             telemetry.addData("Path", "Complete");
             telemetry.update();
         }
