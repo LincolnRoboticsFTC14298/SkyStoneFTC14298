@@ -141,12 +141,13 @@ public class MecRedQuarry extends LinearOpMode {
         if (valMid == 0) {
             // Step through each leg of the path,
             // Note: Reverse movement is obtained by setting a negative distance (not speed)
-            encoderDrive(DRIVE_SPEED, -38, 38, 38, -38, 5.0);  // S1: Forward 48 Inches with 5 Sec timeout
+            encoderDrive(DRIVE_SPEED, -32, 32, 32, -32, 5.0);  // Strage
             robot.claw.setPosition(0.65);
             sleep(1000);
             encoderDrive(DRIVE_SPEED, 10, -10, -10, 10, 5.0);
             encoderDrive(DRIVE_SPEED, -60, -60, -60, -60, 5.0);
             robot.claw.setPosition(1.0);
+            sleep(1000);
             encoderDrive(DRIVE_SPEED, 22, 22, 22, 22, 5.0);
             telemetry.addData("Path", "Complete");
             telemetry.update();

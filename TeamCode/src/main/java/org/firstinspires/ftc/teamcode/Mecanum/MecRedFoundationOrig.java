@@ -29,7 +29,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="Mecanum Red Foundation Auto", group="Mecanum Op")
+@Autonomous(name="Mecanum Red Foundation Auto Original", group="Mecanum Op")
 // @Disabled
 public class MecRedFoundationOrig extends LinearOpMode {
 
