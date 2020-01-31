@@ -1,12 +1,9 @@
 package org.firstinspires.ftc.teamcode.Mecanum;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
-
-import org.firstinspires.ftc.teamcode.Mecanum.MecanumBot;
 
 /**
  * This file illustrates the concept of driving a path based on encoder counts.
@@ -32,9 +29,9 @@ import org.firstinspires.ftc.teamcode.Mecanum.MecanumBot;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="Mecanum Encoder Test", group="Mecanum Op")
+@Autonomous(name="Mecanum Red Foundation Auto", group="Mecanum Op")
 // @Disabled
-public class MecanumEncoderAutoTest extends LinearOpMode {
+public class MecRedFoundationOrig extends LinearOpMode {
 
     /* Declare OpMode members. */
     private MecanumBot robot   = new MecanumBot();   // Use a Mecanum Bot's hardware
@@ -47,7 +44,6 @@ public class MecanumEncoderAutoTest extends LinearOpMode {
             (WHEEL_DIAMETER_INCHES * 3.1415);
     private static final double     DRIVE_SPEED             = 0.3;
     private static final double     TURN_SPEED              = 0.5;
-
 
     @Override
     public void runOpMode() {
@@ -86,8 +82,16 @@ public class MecanumEncoderAutoTest extends LinearOpMode {
 
         // Step through each leg of the path,
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
-        encoderDrive(DRIVE_SPEED,  48,  48, 48, 48, 5.0);  // S1: Forward 48 Inches with 5 Sec timeout
-
+        encoderDrive(DRIVE_SPEED,  -33,  -33, -33, -33, 6.0);  // S1: Backwards 33 inches, 6 second timeout
+        // Close servos
+        robot.leftFoundationServo.setPosition(0.8);
+        robot.rightFoundationServo.setPosition(0.8);
+        sleep(2000);
+        encoderDrive(DRIVE_SPEED, 30, 30, 30, 30, 6.0);
+        robot.leftFoundationServo.setPosition(0.0);
+        robot.rightFoundationServo.setPosition(0.0);
+        sleep(1000);
+        encoderDrive(1, -50, 45, 45, -45, 6.0);
         telemetry.addData("Path", "Complete");
         telemetry.update();
     }
@@ -125,7 +129,7 @@ public class MecanumEncoderAutoTest extends LinearOpMode {
             robot.leftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.leftBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.rightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot. rightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
             // reset the timeout time and start motion.
             runtime.reset();
@@ -133,7 +137,8 @@ public class MecanumEncoderAutoTest extends LinearOpMode {
             robot.leftFront.setPower(Math.abs(speed));
             robot.rightFront.setPower(Math.abs(speed));
             robot.leftBack.setPower(Math.abs(speed));
-            robot.rightBack.setPower(Math.abs(speed));
+            robot. rightBack.setPower(Math.abs(speed));
+
 
             // keep looping while we are still active, and there is time left, and both motors are running.
             // Note: We use (isBusy() && isBusy()) in the loop test, which means that when EITHER motor hits
@@ -177,7 +182,7 @@ public class MecanumEncoderAutoTest extends LinearOpMode {
             robot.leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             robot.rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-            //  sleep(250);   // optional pause after each move
+            sleep(250);   // optional pause after each move
         }
     }
 }
