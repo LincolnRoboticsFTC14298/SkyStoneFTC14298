@@ -90,7 +90,7 @@ public class MecanumEncoderBot extends MecanumBot {
 
     public void strafe(double speed, double dist, double timeout, boolean opModeActive) {
         // If dist is neg, it strafes left, if pos, right
-        dist *= 10/9;
+        dist *= 1/.935;
         // Adjust for friction. Found that the strafe was off by a tenth
         encoderDrive(speed, dist, -dist, -dist, dist, timeout, opModeActive);
     }
