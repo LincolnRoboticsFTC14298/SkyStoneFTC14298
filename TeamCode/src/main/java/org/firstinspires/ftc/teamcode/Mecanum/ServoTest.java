@@ -79,6 +79,7 @@ public class ServoTest extends LinearOpMode {
             rightIntakeServo.setPosition(intakeRPos);
 
             claw.setPosition(clawPos);
+            flipper.setPosition(flipperPos);
 
             // Print Telemetry
             telemetry.addData("leftFoundationServo position: ", leftFoundationServo.getPosition());
