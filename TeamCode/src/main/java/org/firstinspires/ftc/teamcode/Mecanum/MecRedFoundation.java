@@ -96,13 +96,13 @@ public class MecRedFoundation extends LinearOpMode {
         sleep(1000);
 
         // Strafe "left" just outside the foundation
-        encoderDrive(DRIVE_SPEED, -25, 25, 25, -25, 5.0);
+        encoderDrive(DRIVE_SPEED, -34, 34, 34, -34, 5.0);
 
         // Move backwards 18 inches to be right next to the foundation
         encoderDrive(DRIVE_SPEED, -18, -18, -18, -18, 5.0);
 
         // Strafe right to put foundation in
-        encoderDrive(DRIVE_SPEED, 12, -12, -12, 12, 5.0);
+        encoderDrive(1, 22, -22, -22, 22, 5.0);
 
         // Strafe "left" toward the line
         encoderDrive(1, -35, 35, 35, -35, 6.0);
