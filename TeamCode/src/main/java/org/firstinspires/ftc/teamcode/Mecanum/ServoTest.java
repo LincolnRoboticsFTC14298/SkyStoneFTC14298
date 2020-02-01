@@ -13,6 +13,8 @@ public class ServoTest extends LinearOpMode {
     private Servo rightIntakeServo;
 
     private Servo claw;
+    private Servo flipper;
+
     public void runOpMode() {
         leftFoundationServo = hardwareMap.get(Servo.class, "leftFoundationServo");
         rightFoundationServo = hardwareMap.get(Servo.class, "rightFoundationServo");
@@ -20,6 +22,8 @@ public class ServoTest extends LinearOpMode {
         leftIntakeServo = hardwareMap.servo.get("leftIntakeServo");
         rightIntakeServo = hardwareMap.servo.get("rightIntakeServo");
         claw = hardwareMap.servo.get("claw");
+
+        flipper = hardwareMap.servo.get("flipper");
 
         leftFoundationServo.setPosition(0);
         rightFoundationServo.setPosition(0);
@@ -33,6 +37,7 @@ public class ServoTest extends LinearOpMode {
         double intakeLPos = 0.5; // 0.5 closed, 0.13 to open
         double intakeRPos = 0.8; // 0.8 closed, 1 to open
         double clawPos = 1; // 1 opened .65 closed
+        double flipperPos = 0;
 
         waitForStart();
         while (opModeIsActive()) {
@@ -60,6 +65,13 @@ public class ServoTest extends LinearOpMode {
             if (gamepad1.right_trigger > 0.0) {
                 clawPos = Range.clip(clawPos - 0.01,.65,1);
             }
+
+            if (gamepad1.dpad_up) {
+                flipperPos = Range.clip(flipperPos + 0.01, 0, 1);
+            }
+            if (gamepad1.dpad_down) {
+                flipperPos = Range.clip(flipperPos - 0.01, 0, 1);
+            }
             leftFoundationServo.setPosition(foundationPosition);
             rightFoundationServo.setPosition(foundationPosition);
 
@@ -74,6 +86,7 @@ public class ServoTest extends LinearOpMode {
             telemetry.addData("leftIntakeServo position: ", leftIntakeServo.getPosition());
             telemetry.addData("rightIntakeServo position: ", rightIntakeServo.getPosition());
             telemetry.addData("claw position", claw.getPosition());
+            telemetry.addData("Flipper position", flipper.getPosition());
             telemetry.update();
         }
     }
