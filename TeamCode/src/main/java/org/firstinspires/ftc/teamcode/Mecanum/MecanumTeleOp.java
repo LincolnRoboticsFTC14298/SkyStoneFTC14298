@@ -17,10 +17,6 @@ public class MecanumTeleOp extends LinearOpMode {
     private double rightIntakeServoPos = 0.8;
     private double intakeServoSpeed = 0.01;
 
-    // Variables to toggle parts on and off
-    private boolean intakeOn = false;
-    private boolean ejectOn = false;
-
     @Override
     public void runOpMode() {
         /*
@@ -53,7 +49,6 @@ public class MecanumTeleOp extends LinearOpMode {
             if (gamepad1.x) {
                 robot.leftFoundationServo.setPosition(0.8);
                 robot.rightFoundationServo.setPosition(0.8);
-
             }
 
             // Let go of foundation
@@ -75,37 +70,14 @@ public class MecanumTeleOp extends LinearOpMode {
             }
 
             // Move intake motors to spin
-            if (gamepad1.right_bumper && !intakeOn) {
-                intakeOn = true;
-                ejectOn = false;
+            if (gamepad1.right_bumper) {
+                motorSpeed = 1; // Intake assuming right motor is reversed
             }
-            else if (gamepad1.right_bumper && intakeOn) {
-                intakeOn = false;
-                ejectOn = false;
+            else if (gamepad1.left_bumper) {
+                motorSpeed = -1; // Eject assumign right motor is reversed
             }
-            else if (gamepad1.left_bumper && !ejectOn) {
-                intakeOn = false;
-                ejectOn = true;
-            }
-            else if (gamepad1.left_bumper && ejectOn) {
-                intakeOn = false;
-                ejectOn = false;
-            }
-
-            if (intakeOn && !ejectOn) {
-                motorSpeed = 1;
-            }
-            else if (!intakeOn && ejectOn){
-                motorSpeed = -1;
-            } else {
+            else {
                 motorSpeed = 0;
-            }
-
-            if (gamepad1.left_trigger > 0.1) {
-                clawPos = Range.clip(clawPos - 0.01, .65, 1);
-            }
-            else if (gamepad1.right_trigger > 0.1) {
-                clawPos = Range.clip(clawPos + 0.01, .65, 1);
             }
 
             // Update power and position
