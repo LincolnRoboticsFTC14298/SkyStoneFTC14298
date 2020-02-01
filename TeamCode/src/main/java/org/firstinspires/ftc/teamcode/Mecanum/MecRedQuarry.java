@@ -151,7 +151,7 @@ public class MecRedQuarry extends LinearOpMode {
             robot.straight(DRIVE_SPEED, -74, 8.0, true); // Move backwards 76 in.
             robot.claw.setPosition(1.0); // Open Claw
             sleep(1000);
-            robot.strafe(DRIVE_SPEED, -7, 2.0, true);
+            robot.strafe(DRIVE_SPEED, -5, 2.0, true);
             robot.straight(DRIVE_SPEED, 20, 5.0, true); // Park
             telemetry.addData("Path", "Complete");
             telemetry.update();
@@ -174,13 +174,13 @@ public class MecRedQuarry extends LinearOpMode {
             robot.straight(DRIVE_SPEED, -82, 9.0, true); // Move backwards 84 in.
             robot.claw.setPosition(1.0); // Open Claw
             sleep(1000);
-            robot.strafe(DRIVE_SPEED, -7, 2.0, true);
+            robot.strafe(DRIVE_SPEED, -5, 2.0, true);
             robot.straight(DRIVE_SPEED, 20, 5.0, true); // Park
             telemetry.addData("Path", "Complete");
             telemetry.update();
         } else if (valRight == 0) { // If the right block is the skystone, score with it and a regular stone
             robot.straight(DRIVE_SPEED, -3, 2.0, true); // Line the claw up with the block
-            robot.straight(DRIVE_SPEED, 8, 2.0, true); // Line the claw up with the leftmost block
+            robot.straight(DRIVE_SPEED, 6, 2.0, true); // Line the claw up with the leftmost block
             robot.strafe(DRIVE_SPEED, -29.5, 5.0, true);  // Strafe left toward a block
             robot.claw.setPosition(0.65); // Bring down claw servo on block
             sleep(1000);
@@ -196,7 +196,7 @@ public class MecRedQuarry extends LinearOpMode {
             robot.straight(DRIVE_SPEED, -42, 5.0, true); // Move backwards 46 in.
             robot.claw.setPosition(1.0); // Open Claw
             sleep(1000);
-            robot.strafe(DRIVE_SPEED, -7, 2.0, true);
+            robot.strafe(DRIVE_SPEED, -5, 2.0, true);
             robot.straight(DRIVE_SPEED, 20, 5.0, true); // Park
             telemetry.addData("Path", "Complete");
             telemetry.update();

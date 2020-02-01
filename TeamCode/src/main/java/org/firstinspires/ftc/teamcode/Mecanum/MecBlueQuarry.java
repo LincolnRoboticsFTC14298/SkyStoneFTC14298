@@ -151,7 +151,7 @@ public class MecBlueQuarry extends LinearOpMode {
             robot.straight(DRIVE_SPEED, -74, 8.0, true); // Move backwards 76 in.
             robot.claw.setPosition(1.0); // Open Claw
             sleep(1000);
-            robot.strafe(DRIVE_SPEED, -7, 2.0, true);
+            robot.strafe(DRIVE_SPEED, -5, 2.0, true);
             robot.straight(DRIVE_SPEED, -20, 5.0, true); // Park
             telemetry.addData("Path", "Complete");
             telemetry.update();
@@ -174,7 +174,7 @@ public class MecBlueQuarry extends LinearOpMode {
             robot.straight(DRIVE_SPEED, 82, 9.0, true); // Move backwards 84 in.
             robot.claw.setPosition(1.0); // Open Claw
             sleep(1000);
-            robot.strafe(DRIVE_SPEED, -7, 2.0, true);
+            robot.strafe(DRIVE_SPEED, -5, 2.0, true);
             robot.straight(DRIVE_SPEED, -20, 5.0, true); // Park
             telemetry.addData("Path", "Complete");
             telemetry.update();
@@ -196,7 +196,7 @@ public class MecBlueQuarry extends LinearOpMode {
             robot.straight(DRIVE_SPEED, 44, 5.0, true); // Move backwards 46 in.
             robot.claw.setPosition(1.0); // Open Claw
             sleep(1000);
-            robot.strafe(DRIVE_SPEED, -7, 2.0, true);
+            robot.strafe(DRIVE_SPEED, -5, 2.0, true);
             robot.straight(DRIVE_SPEED, -20, 5.0, true); // Park
             telemetry.addData("Path", "Complete");
             telemetry.update();
