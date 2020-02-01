@@ -30,7 +30,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  */
 
 @Autonomous(name="Mecanum Encoder Turn Test", group="Mecanum Op")
-// @Disabled
+@Disabled
 public class MecanumEncoderTurnTest extends LinearOpMode {
 
     /* Declare OpMode members. */
