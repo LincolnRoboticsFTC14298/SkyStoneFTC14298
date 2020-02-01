@@ -16,7 +16,7 @@ public class ToLineRed extends LinearOpMode {
         robot.init(hardwareMap);
         waitForStart();
         robot.strafe(DRIVE_SPEED, -25, 5, opModeIsActive());
-        robot.straight(DRIVE_SPEED, -33, 5, opModeIsActive());
+        robot.straight(DRIVE_SPEED, -35, 5, opModeIsActive());
 
     }
 
