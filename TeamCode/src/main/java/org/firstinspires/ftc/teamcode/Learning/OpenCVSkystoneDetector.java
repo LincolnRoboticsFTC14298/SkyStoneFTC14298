@@ -94,31 +94,34 @@ public class OpenCVSkystoneDetector extends LinearOpMode {
         enum Stage
         {
             detection, // Includes outlines
+            THRESHOLD, // Black & White
+            RAW_IMAGE, // Displays raw view
+            yCbCr
         }
 
         private Stage stageToRenderToViewport = Stage.detection;
         private Stage[] stages = Stage.values();
 
         // When you tap on the screen, the screen changes from its detection methods
-        @Override
-        public void onViewportTapped()
-        {
-            /*
-             * Note that this method is invoked from the UI thread
-             * so whatever we do here, we must do quickly.
-             */
-
-            int currentStageNum = stageToRenderToViewport.ordinal();
-
-            int nextStageNum = currentStageNum + 1;
-
-            if(nextStageNum >= stages.length)
-            {
-                nextStageNum = 0;
-            }
-
-            stageToRenderToViewport = stages[nextStageNum];
-        }
+//        @Override
+//        public void onViewportTapped()
+//        {
+//            /*
+//             * Note that this method is invoked from the UI thread
+//             * so whatever we do here, we must do quickly.
+//             */
+//
+//            int currentStageNum = stageToRenderToViewport.ordinal();
+//
+//            int nextStageNum = currentStageNum + 1;
+//
+//            if(nextStageNum >= stages.length)
+//            {
+//                nextStageNum = 0;
+//            }
+//
+//            stageToRenderToViewport = stages[nextStageNum];
+//        }
 
         @Override
         public Mat processFrame(Mat input)
@@ -201,7 +204,6 @@ public class OpenCVSkystoneDetector extends LinearOpMode {
             // Our viewport in this case should be the Robot Controller's screen
             switch (stageToRenderToViewport)
             {
-                /*
                 case THRESHOLD:
                 {
                     return thresholdMat;
@@ -215,7 +217,7 @@ public class OpenCVSkystoneDetector extends LinearOpMode {
                 case RAW_IMAGE:
                 {
                     return input;
-                }*/
+                }
 
                 default:
                 {
