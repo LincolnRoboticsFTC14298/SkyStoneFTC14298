@@ -14,7 +14,7 @@ public class MecanumEncoderBot extends MecanumBot {
     private static final double     WHEEL_DIAMETER_INCHES   = 4.0 ;     // For figuring circumference
     private static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * 3.1415);
-    private static final double     RADIUS = Math.sqrt(13*13 + 15*15); // 13 in by 15 in
+    private static final double     RADIUS = Math.sqrt(13*13 + 15*15)/2; // 13 in by 15 in
 
 
     @Override

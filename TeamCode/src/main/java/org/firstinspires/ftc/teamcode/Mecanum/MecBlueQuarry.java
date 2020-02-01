@@ -45,12 +45,14 @@ import java.util.List;
 
 @Autonomous(name="MecRedQuarry", group="Mecanum Op")
 // @Disabled
-public class MecRedQuarryCopy extends LinearOpMode {
+public class MecBlueQuarry extends LinearOpMode {
 
     /* Declare OpMode members. */
-    private MecanumEncoderBot robot   = new MecanumEncoderBot();   // Use a Mecanum Encoder Bot's hardware
-    private static final double     DRIVE_SPEED             = 0.3;
-    private static final double     TURN_SPEED              = 0.5;
+    private ElapsedTime runtime = new ElapsedTime();
+
+    private MecanumEncoderBot robot = new MecanumEncoderBot();   // Use a Mecanum Encoder Bot's hardware
+    private static final double DRIVE_SPEED = 0.3;
+    private static final double TURN_SPEED = 0.5;
 
     // 0 means skystone, 1 means yellow stone
     // -1 for debug, but we can keep it like this because if it works, it should change to either 0 or 255
@@ -58,16 +60,16 @@ public class MecRedQuarryCopy extends LinearOpMode {
     private static int valLeft = -1;
     private static int valRight = -1;
 
-    private static float rectHeight = .6f/8f;
-    private static float rectWidth = 1.5f/8f;
+    private static float rectHeight = .6f / 8f;
+    private static float rectWidth = 1.5f / 8f;
 
-    private static float offsetX = 0f/8f; // Changing this moves the three rects and the three circles left or right, range : (-2, 2) not inclusive
-    private static float offsetY = 0f/8f; // Changing this moves the three rects and circles up or down, range: (-4, 4) not inclusive
+    private static float offsetX = 0f / 8f; // Changing this moves the three rects and the three circles left or right, range : (-2, 2) not inclusive
+    private static float offsetY = 0f / 8f; // Changing this moves the three rects and circles up or down, range: (-4, 4) not inclusive
 
     // Moves all rectangles right or left by amount. units are in ratio to monitor
-    private static float[] midPos = {4f/8f + offsetX, 4f/8f + offsetY}; // Index: 0 = col, 1 = row, so midPos[0] is the middle column
-    private static float[] leftPos = {2f/8f + offsetX, 4f/8f + offsetY};
-    private static float[] rightPos = {6f/8f + offsetX, 4f/8f + offsetY};
+    private static float[] midPos = {4f / 8f + offsetX, 4f / 8f + offsetY}; // Index: 0 = col, 1 = row, so midPos[0] is the middle column
+    private static float[] leftPos = {2f / 8f + offsetX, 4f / 8f + offsetY};
+    private static float[] rightPos = {6f / 8f + offsetX, 4f / 8f + offsetY};
 
     private final int rows = 640;
     private final int cols = 480;
@@ -90,7 +92,7 @@ public class MecRedQuarryCopy extends LinearOpMode {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         phoneCam = new OpenCvInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
         phoneCam.openCameraDevice(); // Open camera
-        phoneCam.setPipeline(new MecRedQuarryCopy.StageSwitchingPipeline()); // Different stages
+        phoneCam.setPipeline(new MecBlueQuarry.StageSwitchingPipeline()); // Different stages
         phoneCam.startStreaming(rows, cols, OpenCvCameraRotation.UPRIGHT); // Display on Robot Controller
         //width, height
         //width = height in this case, because camera is in portrait mode.
@@ -111,15 +113,15 @@ public class MecRedQuarryCopy extends LinearOpMode {
         robot.leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.leftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot. rightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.rightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         robot.leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot. rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         // Send telemetry message to indicate successful Encoder reset
-        telemetry.addData("Encoder Reset",  "Starting at lf: %7d, rf: %7d, lb: %7d, rb: %7d",
+        telemetry.addData("Encoder Reset", "Starting at lf: %7d, rf: %7d, lb: %7d, rb: %7d",
                 robot.leftFront.getCurrentPosition(),
                 robot.rightFront.getCurrentPosition(),
                 robot.leftBack.getCurrentPosition(),
@@ -132,87 +134,74 @@ public class MecRedQuarryCopy extends LinearOpMode {
         waitForStart();
 
         if (valLeft == 0) { // If the left block is the skystone
-            robot.straight(DRIVE_SPEED, -3, 2.0, true);
-            //encoderDrive(DRIVE_SPEED, -3, -3, -3, -3, 2.0); // Line the claw up with the blocks instead of phone
-            robot.straight(DRIVE_SPEED, -8, 2.0, true);
-            //encoderDrive(DRIVE_SPEED, -8, -8, -8, -8, 2.0); // Line the claw up with the leftmost block
-            robot.strafe(DRIVE_SPEED, -31, 5.0, true);
-            //encoderDrive(DRIVE_SPEED, -31, 31, 31, -31, 5.0);  // Strafe left toward a block
+            robot.straight(DRIVE_SPEED, 3, 2.0, true); // Line the claw up with the blocks instead of phone
+            robot.straight(DRIVE_SPEED, 8, 2.0, true); // Line the claw up with the leftmost block
+            robot.strafe(DRIVE_SPEED, -31, 5.0, true); // Strafe left toward a block
             robot.claw.setPosition(0.65); // Bring down claw servo on block
             sleep(1000);
-            robot.strafe(DRIVE_SPEED, 10, 5.0, true);
-            //encoderDrive(DRIVE_SPEED, 10, -10, -10, 10, 5.0); // Strafe right to make space to move through middle
-            robot.straight(DRIVE_SPEED, -52, 5.0, true);
-            //encoderDrive(DRIVE_SPEED, -52, -52, -52, -52, 5.0); // Move backwards 52 inches.
+            robot.strafe(DRIVE_SPEED, 10, 5.0, true); // Strafe right to make space to move through middle
+            robot.straight(DRIVE_SPEED, 52, 5.0, true); // Move backwards 52 inches.
             robot.claw.setPosition(1.0); // Open Claw
             sleep(1000);
-            robot.straight(DRIVE_SPEED, 76, 8.0, true);
-            // encoderDrive(DRIVE_SPEED, 76, 76, 76, 76, 8.0); // Go to the other stone
-            robot.strafe(DRIVE_SPEED, -10, 5.0, true);
-            //encoderDrive(DRIVE_SPEED, -10, 10, 10, -10, 5.0); // Strafe left to prepare to take the block
+            robot.straight(DRIVE_SPEED, -76, 8.0, true); // Go to the other stone
+            robot.strafe(DRIVE_SPEED, -10, 5.0, true); // Strafe left to prepare to take the block
             robot.claw.setPosition(0.65); // Bring down claw servo on block
             sleep(1000);
-            robot.strafe(DRIVE_SPEED, 10, 5.0, true);
-            //encoderDrive(DRIVE_SPEED, 10, -10, -10, 10, 5.0); // Strafe right to make space to move through middle
-            robot.straight(DRIVE_SPEED -76, 8.0, true);
-            //encoderDrive(DRIVE_SPEED, -76, -76, -76, -76, 8.0); // Move backwards 76 in.
+            robot.strafe(DRIVE_SPEED, 10, 5.0, true); // Strafe right to make space to move through middle
+            robot.straight(DRIVE_SPEED, 76, 8.0, true); // Move backwards 76 in.
             robot.claw.setPosition(1.0); // Open Claw
             sleep(1000);
-            robot.strafe(DRIVE_SPEED, 22, 5.0, true)
-            //encoderDrive(DRIVE_SPEED, 22, 22, 22, 22, 5.0); // Park
+            robot.strafe(DRIVE_SPEED, 22, 5.0, true); // Park
             telemetry.addData("Path", "Complete");
             telemetry.update();
-        }
-        else if (valMid == 0) { // If the middle block has the skystone
+        } else if (valMid == 0) { // If the middle block has the skystone
             // Step through each leg of the path,
             // Note: Reverse movement is obtained by setting a negative distance (not speed)
-            encoderDrive(DRIVE_SPEED, -3, -3, -3, -3, 2.0); // Line the claw up with the block
-            encoderDrive(DRIVE_SPEED, -31, 31, 31, -31, 5.0);  // Strafe left toward a block
+            robot.straight(DRIVE_SPEED, 3, 2.0, true); // Line the claw up with the block
+            robot.strafe(DRIVE_SPEED, -31, 5.0, true); // Strafe left toward a block
             robot.claw.setPosition(0.65); // Bring down claw servo on block
             sleep(1000);
-            encoderDrive(DRIVE_SPEED, 10, -10, -10, 10, 5.0); // Strafe right to make space to move through middle
-            encoderDrive(DRIVE_SPEED, -60, -60, -60, -60, 8.0); // Move backwards 5 ft.
+            robot.strafe(DRIVE_SPEED, 10, 5.0, true); // Strafe right to make space to move through middle
+            robot.straight(DRIVE_SPEED, 60, 8.0, true); // Move backwards 5 ft.
             robot.claw.setPosition(1.0); // Open Claw
             sleep(1000);
-            encoderDrive(DRIVE_SPEED, 84, 84, 84, 84, 9.0); // Go to the other stone
-            encoderDrive(DRIVE_SPEED, -10, 10, 10, -10, 5.0); // Strafe left to prepare to take the block
+            robot.straight(DRIVE_SPEED, -84, 9.0, true); // Go to the other stone
+            robot.strafe(DRIVE_SPEED, -10, 5.0, true); // Strafe left to prepare to take the block
             robot.claw.setPosition(0.65); // Bring down claw servo on block
             sleep(1000);
-            encoderDrive(DRIVE_SPEED, 10, -10, -10, 10, 5.0); // Strafe right to make space to move through middle
-            encoderDrive(DRIVE_SPEED, -84, -84, -84, -84, 9.0); // Move backwards 84 in.
+            robot.strafe(DRIVE_SPEED, 10, 5.0, true); // Strafe right to make space to move through middle
+            robot.straight(DRIVE_SPEED, 84, 9.0, true); // Move backwards 84 in.
             robot.claw.setPosition(1.0); // Open Claw
             sleep(1000);
-            encoderDrive(DRIVE_SPEED, 22, 22, 22, 22, 5.0); // Park
+            robot.straight(DRIVE_SPEED, -22, 5.0, true); // Park
             telemetry.addData("Path", "Complete");
             telemetry.update();
-        }
-        else if (valRight == 0) { // If the right block is the skystone, score with it and a regular stone
-            encoderDrive(DRIVE_SPEED, -3, -3, -3, -3, 2.0); // Line the claw up with the block
-            encoderDrive(DRIVE_SPEED, 8, 8, 8, 8, 2.0); // Line the claw up with the leftmost block
-            encoderDrive(DRIVE_SPEED, -31, 31, 31, -31, 5.0);  // Strafe left toward a block
+        } else if (valRight == 0) { // If the right block is the skystone, score with it and a regular stone
+            robot.straight(DRIVE_SPEED, 3, 2.0, true); // Line the claw up with the block
+            robot.straight(DRIVE_SPEED, -8, 2.0, true); // Line the claw up with the leftmost block
+            robot.strafe(DRIVE_SPEED, -31, 5.0, true);  // Strafe left toward a block
             robot.claw.setPosition(0.65); // Bring down claw servo on block
             sleep(1000);
-            encoderDrive(DRIVE_SPEED, 10, -10, -10, 10, 5.0); // Strafe right to make space to move through middle
-            encoderDrive(DRIVE_SPEED, -62, -62, -62, -62, 5.0); // Move backwards 62 inches.
+            robot.strafe(DRIVE_SPEED, 10, 5.0, true); // Strafe right to make space to move through middle
+            robot.straight(DRIVE_SPEED, 62, 5.0, true); // Move backwards 62 inches.
             robot.claw.setPosition(1.0); // Open Claw
             sleep(1000);
-            encoderDrive(DRIVE_SPEED, 46, 46, 46, 46, 9.0); // Go to the other stone
-            encoderDrive(DRIVE_SPEED, -10, 10, 10, -10, 5.0); // Strafe left to prepare to take the block
+            robot.straight(DRIVE_SPEED, -46, 9.0, true); // Go to the other stone
+            robot.strafe(DRIVE_SPEED, -10, 5.0, true); // Strafe left to prepare to take the block
             robot.claw.setPosition(0.65); // Bring down claw servo on block
             sleep(1000);
-            encoderDrive(DRIVE_SPEED, 10, -10, -10, 10, 5.0); // Strafe right to make space to move through middle
-            encoderDrive(DRIVE_SPEED, -46, -46, -46, -46, 9.0); // Move backwards 46 in.
+            robot.strafe(DRIVE_SPEED, 10, 5.0, true); // Strafe right to make space to move through middle
+            robot.straight(DRIVE_SPEED, 46, 5.0, true); // Move backwards 46 in.
             robot.claw.setPosition(1.0); // Open Claw
             sleep(1000);
-            encoderDrive(DRIVE_SPEED, 22, 22, 22, 22, 5.0); // Park
+            robot.straight(DRIVE_SPEED, -22, 5.0, true); // Park
             telemetry.addData("Path", "Complete");
             telemetry.update();
         }
     }
 
     // Detection pipeline
-    static class StageSwitchingPipeline extends OpenCvPipeline
-    {
+    static class StageSwitchingPipeline extends OpenCvPipeline {
         // Variable name is short for yCbCr channel to Mat object
         Mat yCbCrChan2Mat = new Mat();
 
@@ -220,21 +209,19 @@ public class MecRedQuarryCopy extends LinearOpMode {
         Mat all = new Mat();
         List<MatOfPoint> contoursList = new ArrayList<>();
 
-        enum Stage
-        {
+        enum Stage {
             detection, // Includes outlines
             THRESHOLD, // Black & White
             RAW_IMAGE, // Displays raw view
             yCbCr
         }
 
-        private MecRedQuarryCopy.StageSwitchingPipeline.Stage stageToRenderToViewport = MecRedQuarryCopy.StageSwitchingPipeline.Stage.detection;
-        private MecRedQuarryCopy.StageSwitchingPipeline.Stage[] stages = MecRedQuarryCopy.StageSwitchingPipeline.Stage.values();
+        private MecBlueQuarry.StageSwitchingPipeline.Stage stageToRenderToViewport = MecBlueQuarry.StageSwitchingPipeline.Stage.detection;
+        private MecBlueQuarry.StageSwitchingPipeline.Stage[] stages = MecBlueQuarry.StageSwitchingPipeline.Stage.values();
 
         // When you tap on the screen, the screen changes from its detection methods
         @Override
-        public void onViewportTapped()
-        {
+        public void onViewportTapped() {
             /*
              * Note that this method is invoked from the UI thread
              * so whatever we do here, we must do quickly.
@@ -244,8 +231,7 @@ public class MecRedQuarryCopy extends LinearOpMode {
 
             int nextStageNum = currentStageNum + 1;
 
-            if(nextStageNum >= stages.length)
-            {
+            if (nextStageNum >= stages.length) {
                 nextStageNum = 0;
             }
 
@@ -253,8 +239,7 @@ public class MecRedQuarryCopy extends LinearOpMode {
         }
 
         @Override
-        public Mat processFrame(Mat input)
-        {
+        public Mat processFrame(Mat input) {
             contoursList.clear();
 
             // Color diff cb.
@@ -281,81 +266,77 @@ public class MecRedQuarryCopy extends LinearOpMode {
 
 
             // Get values of the pixels inside the circle from the frame
-            double[] pixMid = thresholdMat.get((int)(input.rows()* midPos[1]), (int)(input.cols()* midPos[0]));
+            double[] pixMid = thresholdMat.get((int) (input.rows() * midPos[1]), (int) (input.cols() * midPos[0]));
             valMid = (int) pixMid[0];
 
-            double[] pixLeft = thresholdMat.get((int)(input.rows()* leftPos[1]), (int)(input.cols()* leftPos[0]));
+            double[] pixLeft = thresholdMat.get((int) (input.rows() * leftPos[1]), (int) (input.cols() * leftPos[0]));
             valLeft = (int) pixLeft[0];
 
-            double[] pixRight = thresholdMat.get((int)(input.rows()* rightPos[1]), (int)(input.cols()* rightPos[0]));
+            double[] pixRight = thresholdMat.get((int) (input.rows() * rightPos[1]), (int) (input.cols() * rightPos[0]));
             valRight = (int) pixRight[0];
 
             // Create three points
-            Point pointMid = new Point((int)(input.cols()* midPos[0]), (int)(input.rows()* midPos[1]));
-            Point pointLeft = new Point((int)(input.cols()* leftPos[0]), (int)(input.rows()* leftPos[1]));
-            Point pointRight = new Point((int)(input.cols()* rightPos[0]), (int)(input.rows()* rightPos[1]));
+            Point pointMid = new Point((int) (input.cols() * midPos[0]), (int) (input.rows() * midPos[1]));
+            Point pointLeft = new Point((int) (input.cols() * leftPos[0]), (int) (input.rows() * leftPos[1]));
+            Point pointRight = new Point((int) (input.cols() * rightPos[0]), (int) (input.rows() * rightPos[1]));
 
             // Draw circles on those points
-            Imgproc.circle(all, pointMid,5, new Scalar( 255, 0, 0 ),1 );//draws circle
-            Imgproc.circle(all, pointLeft,5, new Scalar( 255, 0, 0 ),1 );//draws circle
-            Imgproc.circle(all, pointRight,5, new Scalar( 255, 0, 0 ),1 );//draws circle
+            Imgproc.circle(all, pointMid, 5, new Scalar(255, 0, 0), 1);//draws circle
+            Imgproc.circle(all, pointLeft, 5, new Scalar(255, 0, 0), 1);//draws circle
+            Imgproc.circle(all, pointRight, 5, new Scalar(255, 0, 0), 1);//draws circle
 
             // Draw 3 rectangles
             Imgproc.rectangle(// Left position rectangle
                     all,
                     new Point(
-                            input.cols()*(leftPos[0] - rectWidth / 2),
-                            input.rows()*(leftPos[1] - rectHeight / 2)),
+                            input.cols() * (leftPos[0] - rectWidth / 2),
+                            input.rows() * (leftPos[1] - rectHeight / 2)),
                     new Point(
-                            input.cols()*(leftPos[0] + rectWidth/2),
-                            input.rows()*(leftPos[1] + rectHeight/2)),
+                            input.cols() * (leftPos[0] + rectWidth / 2),
+                            input.rows() * (leftPos[1] + rectHeight / 2)),
                     new Scalar(0, 255, 0), 3);
 
             Imgproc.rectangle(// Mid position rectangle
                     all,
                     new Point(
-                            input.cols()*(midPos[0]-rectWidth/2),
-                            input.rows()*(midPos[1]-rectHeight/2)),
+                            input.cols() * (midPos[0] - rectWidth / 2),
+                            input.rows() * (midPos[1] - rectHeight / 2)),
                     new Point(
-                            input.cols()*(midPos[0]+rectWidth/2),
-                            input.rows()*(midPos[1]+rectHeight/2)),
+                            input.cols() * (midPos[0] + rectWidth / 2),
+                            input.rows() * (midPos[1] + rectHeight / 2)),
                     new Scalar(0, 255, 0), 3);
             Imgproc.rectangle(// Right position rectangle
                     all,
                     new Point(
-                            input.cols()*(rightPos[0]-rectWidth/2),
-                            input.rows()*(rightPos[1]-rectHeight/2)),
+                            input.cols() * (rightPos[0] - rectWidth / 2),
+                            input.rows() * (rightPos[1] - rectHeight / 2)),
                     new Point(
-                            input.cols()*(rightPos[0]+rectWidth/2),
-                            input.rows()*(rightPos[1]+rectHeight/2)),
+                            input.cols() * (rightPos[0] + rectWidth / 2),
+                            input.rows() * (rightPos[1] + rectHeight / 2)),
                     new Scalar(0, 255, 0), 3);
 
             // Our viewport in this case should be the Robot Controller's screen
-            switch (stageToRenderToViewport)
-            {
-                case THRESHOLD:
-                {
+            switch (stageToRenderToViewport) {
+                case THRESHOLD: {
                     return thresholdMat;
                 }
 
-                case detection:
-                {
+                case detection: {
                     return all;
                 }
 
-                case RAW_IMAGE:
-                {
+                case RAW_IMAGE: {
                     return input;
                 }
 
-                default:
-                {
+                default: {
                     return input;
                 }
             }
         }
 
     }
+}
 
     /*
      *  Method to perform a relative move, based on encoder counts.
@@ -364,5 +345,4 @@ public class MecRedQuarryCopy extends LinearOpMode {
      *  1) Move gets to the desired position
      *  2) Move runs out of time
      *  3) Driver stops the opmode running.
-
-}
+     */
