@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 
 // Robot starts with claws facing the skyblocks and intake facing away from bridge
-@Autonomous(name="Mecanum Encoder To Line Blue", group="Mecanum Op")
+@Autonomous(name="Mec Inner Line Blue", group="Mecanum Op")
 //@Disabled
 public class ToLineBlue extends LinearOpMode {
     private MecanumEncoderBot robot   = new MecanumEncoderBot();   // Use a Mecanum Encoder Bot's hardware
