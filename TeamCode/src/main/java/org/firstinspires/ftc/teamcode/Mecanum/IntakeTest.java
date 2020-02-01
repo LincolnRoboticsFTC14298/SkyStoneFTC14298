@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.util.Range;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 @TeleOp(name = "MotorTest", group="Mecanum Op")
-@Diabled
+@Disabled
 public class IntakeTest extends LinearOpMode {
     private DcMotor leftMotor, rightMotor;
     private Servo leftIntakeServo, rightIntakeServo;
