@@ -16,6 +16,7 @@ public class MecanumTeleOp extends LinearOpMode {
     private double leftIntakeServoPos = 0.5;
     private double rightIntakeServoPos = 0.8;
     private double intakeServoSpeed = 0.01;
+    private double flipperPos = 0;
 
     @Override
     public void runOpMode() {
@@ -79,12 +80,19 @@ public class MecanumTeleOp extends LinearOpMode {
             else {
                 motorSpeed = 0;
             }
+            if (gamepad1.dpad_up) {
+                flipperPos = Range.clip(flipperPos + 0.005, 0, .4);
+            }
+            if (gamepad1.dpad_down) {
+                flipperPos = Range.clip(flipperPos - 0.005, 0, .4);
+            }
 
             // Update power and position
             robot.leftIntakeServo.setPosition(leftIntakeServoPos);
             robot.rightIntakeServo.setPosition(rightIntakeServoPos);
 
             robot.claw.setPosition(clawPos);
+            robot.flipper.setPosition(flipperPos);
 
             robot.leftIntakeMotor.setPower(motorSpeed);
             robot.rightIntakeMotor.setPower(motorSpeed);

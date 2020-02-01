@@ -40,6 +40,8 @@ public class MecanumBot {
 
     public Servo claw;
 
+    public Servo flipper;
+
     private DcMotor[] wheelMotors = new DcMotor[4];
 
     /* local OpMode members. */
@@ -87,6 +89,7 @@ public class MecanumBot {
         rightIntakeServo = hwMap.get(Servo.class, "rightIntakeServo");
 
         claw = hwMap.get(Servo.class, "claw");
+        flipper = hwMap.get(Servo.class, "flipper");
 
         rightFront.setDirection(DcMotor.Direction.REVERSE);
         rightBack.setDirection(DcMotor.Direction.REVERSE);
@@ -118,6 +121,7 @@ public class MecanumBot {
         leftIntakeServo.setPosition(leftIntakeServoPos);
         rightIntakeServo.setPosition(rightIntakeServoPos);
         claw.setPosition(clawPos);
+        flipper.setPosition(0);
     }
 }
 

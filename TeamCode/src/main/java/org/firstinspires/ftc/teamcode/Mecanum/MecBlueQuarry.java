@@ -135,7 +135,7 @@ public class MecBlueQuarry extends LinearOpMode {
 
         if (valLeft == 0) { // If the left block is the skystone
             robot.straight(DRIVE_SPEED, 3, 2.0, true); // Line the claw up with the blocks instead of phone
-            robot.straight(DRIVE_SPEED, -8, 2.0, true); // Line the claw up with the leftmost block
+            robot.straight(DRIVE_SPEED, -7, 2.0, true); // Line the claw up with the leftmost block
             robot.strafe(DRIVE_SPEED, -29.5, 5.0, true); // Strafe left toward a block
             robot.claw.setPosition(0.65); // Bring down claw servo on block
             sleep(1000);
