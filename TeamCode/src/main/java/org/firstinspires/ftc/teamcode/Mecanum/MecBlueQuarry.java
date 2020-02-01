@@ -43,7 +43,7 @@ import java.util.List;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="MecRedQuarry", group="Mecanum Op")
+@Autonomous(name="MecBlueQuarry", group="Mecanum Op")
 // @Disabled
 public class MecBlueQuarry extends LinearOpMode {
 
