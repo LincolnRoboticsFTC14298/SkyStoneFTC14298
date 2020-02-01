@@ -4,8 +4,6 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-
 
 /**
  * This file illustrates the concept of driving a path based on encoder counts.
@@ -31,9 +29,9 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="Mecanum Red Foundation Auto Original", group="Mecanum Op")
-@Disabled
-public class MecRedFoundationOrig extends LinearOpMode {
+@Autonomous(name="Mecanum Red Foundation Auto", group="Mecanum Op")
+// @Disabled
+public class MecBlueFoundation extends LinearOpMode {
 
     /* Declare OpMode members. */
     private MecanumBot robot   = new MecanumBot();   // Use a Mecanum Bot's hardware
@@ -63,12 +61,12 @@ public class MecRedFoundationOrig extends LinearOpMode {
         robot.leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.leftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot. rightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.rightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         robot.leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot. rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         // Send telemetry message to indicate successful Encoder reset
         telemetry.addData("Encoder Reset",  "Starting at lf: %7d, rf: %7d, lb: %7d, rb: %7d",
@@ -84,16 +82,31 @@ public class MecRedFoundationOrig extends LinearOpMode {
 
         // Step through each leg of the path,
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
+
+        // Robot starts backwards because the foundation servos are at the back of the robot
         encoderDrive(DRIVE_SPEED,  -33,  -33, -33, -33, 6.0);  // S1: Backwards 33 inches, 6 second timeout
         // Close servos
         robot.leftFoundationServo.setPosition(0.8);
         robot.rightFoundationServo.setPosition(0.8);
         sleep(2000);
         encoderDrive(DRIVE_SPEED, 30, 30, 30, 30, 6.0);
+        // Open servos
         robot.leftFoundationServo.setPosition(0.0);
         robot.rightFoundationServo.setPosition(0.0);
         sleep(1000);
-        encoderDrive(1, -50, 45, 45, -45, 6.0);
+
+        // Strafe "right" just outside the foundation
+        encoderDrive(DRIVE_SPEED, 34, -34, -34, 34, 5.0);
+
+        // Move backwards 18 inches to be right next to the foundation
+        encoderDrive(DRIVE_SPEED, -18, -18, -18, -18, 5.0);
+
+        // Strafe right to put foundation in
+        encoderDrive(1, 22, -22, -22, 22, 5.0);
+
+        // Strafe "right" toward the line
+        encoderDrive(1, 35, -35, -35, 35, 6.0);
+
         telemetry.addData("Path", "Complete");
         telemetry.update();
     }
