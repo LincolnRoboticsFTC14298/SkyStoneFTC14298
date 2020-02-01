@@ -139,7 +139,7 @@ public class MecRedQuarry extends LinearOpMode {
             robot.strafe(DRIVE_SPEED, -29.5, 5.0, true); // Strafe left toward a block
             robot.claw.setPosition(0.65); // Bring down claw servo on block
             sleep(1000);
-            robot.strafe(DRIVE_SPEED, 9, 5.0, true); // Strafe right to make space to move through middle
+            robot.strafe(DRIVE_SPEED, 10, 5.0, true); // Strafe right to make space to move through middle
             robot.straight(DRIVE_SPEED, -50, 5.0, true); // Move backwards 50 inches.
             robot.claw.setPosition(1.0); // Open Claw
             sleep(1000);
@@ -162,7 +162,7 @@ public class MecRedQuarry extends LinearOpMode {
             robot.strafe(DRIVE_SPEED, -29.5, 5.0, true); // Strafe left toward a block
             robot.claw.setPosition(0.65); // Bring down claw servo on block
             sleep(1000);
-            robot.strafe(DRIVE_SPEED, 9, 5.0, true); // Strafe right to make space to move through middle
+            robot.strafe(DRIVE_SPEED, 10, 5.0, true); // Strafe right to make space to move through middle
             robot.straight(DRIVE_SPEED, -58, 8.0, true); // Move backwards 5 ft.
             robot.claw.setPosition(1.0); // Open Claw
             sleep(1000);
@@ -184,7 +184,7 @@ public class MecRedQuarry extends LinearOpMode {
             robot.strafe(DRIVE_SPEED, -29.5, 5.0, true);  // Strafe left toward a block
             robot.claw.setPosition(0.65); // Bring down claw servo on block
             sleep(1000);
-            robot.strafe(DRIVE_SPEED, 9, 5.0, true); // Strafe right to make space to move through middle
+            robot.strafe(DRIVE_SPEED, 10, 5.0, true); // Strafe right to make space to move through middle
             robot.straight(DRIVE_SPEED, -60, 5.0, true); // Move backwards 62 inches.
             robot.claw.setPosition(1.0); // Open Claw
             sleep(1000);
