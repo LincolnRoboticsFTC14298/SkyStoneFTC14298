@@ -15,15 +15,15 @@ public class Robot {
     public class Builder {
         private Class[] robotParts = null;
 
-        public Robot build(HardwareMap ahwMap) {
+        public void build(HardwareMap ahwMap) {
             // Initialize motors and servos
             hwMap = ahwMap;
-            for (NewDcMotor motor : Motors) {
+            for (NewDcMotor motor : motors) {
                 motor.motor = hwMap.dcMotor.get(motor.getName());
                 motor.checkIfReversed(); // Reverses motor if needed
                 motor.setDefaultPower();
             }
-            for (NewServo servo : Servos) {
+            for (NewServo servo : servos) {
                 servo.servo = hwMap.servo.get(servo.getName());
                 servo.setDefaultPosition();
             }
@@ -46,6 +46,7 @@ public class Robot {
         
         for (Class robotPart : robotParts) {
             this.motors.addAll(robotPart.getNewDcMotors());
+            this.servos.addAll(robotPart.getNewServos());
         }
 
     }
@@ -72,29 +73,44 @@ public class Robot {
 
     // Note: the robotParts code must be costume made.
 
-    private interface DriveTrain {
-        interface TeleOp {
-            void move();
+    private abstract class DriveTrain {
+        public abstract class TeleOp {
+            abstract void move();
         }
-        interface Mecanum {
-            void move(double speed, double dist, double timeout, boolean opIsActive);
-            void strafe(double speed, double dist, double timeout, boolean opIsActive);
-            void rotate(double speed, double angle, double timeout, boolean opIsActive);
+        public abstract class Encoder {
+            void move(double speed, double dist, double timeout, boolean opIsActive) {
+
+            };
+            void rotate(double speed, double angle, double timeout, boolean opIsActive) {
+
+            };
+            abstract void strafe(double speed, double dist, double timeout, boolean opIsActive);
         }
     }
 
     public getDriveTrain() { return this.driveTrain; }
 
-    private class Mecanum implements DriveTrain {
-        public TeleOp implements TeleOp {
+    private class Mecanum extends DriveTrain {
+        public class TeleOp extends DriveTrain.TeleOp {
+            public void move() {
 
+            }
+        }
+        public class Encoder extends DriveTrain.Encoder {
+            public void strafe(double speed, double dist, double timeout, boolean opIsActive) {}
         }
     }
 
     private class Classic implements DriveTrain {
+        public class TeleOp extends DriveTrain.TeleOp {
+            public void move() {
 
-        public void strafe() {
-            throw new UnsupportedOperationException();
+            }
+        }
+        public class Encoder extends DriveTrain.Encoder {
+            public void strafe(double speed, double dist, double timeout, boolean opIsActive) {
+                throw new UnsupportedOperationException();
+            }
         }
     }
 }
