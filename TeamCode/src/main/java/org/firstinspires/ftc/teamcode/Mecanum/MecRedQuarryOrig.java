@@ -47,7 +47,7 @@ import java.util.List;
  */
 
 @Autonomous(name="MecRedQuarryOrig", group="Mecanum Op")
-// @Disabled
+@Disabled
 public class MecRedQuarryOrig extends LinearOpMode {
 
     /* Declare OpMode members. */

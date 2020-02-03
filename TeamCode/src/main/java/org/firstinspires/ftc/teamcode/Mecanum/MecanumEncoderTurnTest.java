@@ -5,6 +5,8 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+
 /**
  * This file illustrates the concept of driving a path based on encoder counts.
  * It uses the common Pushbot hardware class to define the drive on the robot.
@@ -30,7 +32,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  */
 
 @Autonomous(name="Mecanum Encoder Turn Test", group="Mecanum Op")
-// @Disabled
+@Disabled
 public class MecanumEncoderTurnTest extends LinearOpMode {
 
     /* Declare OpMode members. */
