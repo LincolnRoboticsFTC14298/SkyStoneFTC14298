@@ -92,7 +92,7 @@ public class MecBlueQuarry extends LinearOpMode {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         phoneCam = new OpenCvInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
         phoneCam.openCameraDevice(); // Open camera
-        phoneCam.setPipeline(new MecBlueQuarry.StageSwitchingPipeline()); // Different stages
+        phoneCam.setPipeline(new MecRedQuarry.StageSwitchingPipeline()); // Different stages
         phoneCam.startStreaming(rows, cols, OpenCvCameraRotation.UPRIGHT); // Display on Robot Controller
         //width, height
         //width = height in this case, because camera is in portrait mode.
@@ -133,26 +133,26 @@ public class MecBlueQuarry extends LinearOpMode {
         // Assume that the phone lines up with the middle block to detect the blocks
         waitForStart();
 
-        if (valRight == 0) { // If the left block is the skystone
+        if (valLeft == 0) { // If the left block is the skystone
             robot.straight(DRIVE_SPEED, -3, 2.0, true); // Line the claw up with the blocks instead of phone
-            robot.straight(DRIVE_SPEED, 8, 2.0, true); // Line the claw up with the leftmost block
+            robot.straight(DRIVE_SPEED, -8, 2.0, true); // Line the claw up with the leftmost block
             robot.strafe(DRIVE_SPEED, -29.5, 5.0, true); // Strafe left toward a block
             robot.claw.setPosition(0.65); // Bring down claw servo on block
             sleep(1000);
             robot.strafe(DRIVE_SPEED, 10, 5.0, true); // Strafe right to make space to move through middle
-            robot.straight(DRIVE_SPEED, 50, 5.0, true); // Move backwards 52 inches.
+            robot.straight(DRIVE_SPEED, -50, 5.0, true); // Move backwards 50 inches.
             robot.claw.setPosition(1.0); // Open Claw
             sleep(1000);
-            robot.straight(DRIVE_SPEED, -74, 8.0, true); // Go to the other stone
-            robot.strafe(DRIVE_SPEED, -10, 5.0, true); // Strafe left to prepare to take the block
+            robot.straight(DRIVE_SPEED, 74, 8.0, true); // Go to the other stone
+            robot.strafe(DRIVE_SPEED, -11, 5.0, true); // Strafe left to prepare to take the block
             robot.claw.setPosition(0.65); // Bring down claw servo on block
             sleep(1000);
             robot.strafe(DRIVE_SPEED, 10, 5.0, true); // Strafe right to make space to move through middle
-            robot.straight(DRIVE_SPEED, 74, 8.0, true); // Move backwards 76 in.
+            robot.straight(DRIVE_SPEED, -74, 8.0, true); // Move backwards 76 in.
             robot.claw.setPosition(1.0); // Open Claw
             sleep(1000);
             robot.strafe(DRIVE_SPEED, -5, 2.0, true);
-            robot.straight(DRIVE_SPEED, -20, 5.0, true); // Park
+            robot.straight(DRIVE_SPEED, 20, 5.0, true); // Park
             telemetry.addData("Path", "Complete");
             telemetry.update();
         } else if (valMid == 0) { // If the middle block has the skystone
@@ -163,41 +163,44 @@ public class MecBlueQuarry extends LinearOpMode {
             robot.claw.setPosition(0.65); // Bring down claw servo on block
             sleep(1000);
             robot.strafe(DRIVE_SPEED, 10, 5.0, true); // Strafe right to make space to move through middle
-            robot.straight(DRIVE_SPEED, 58, 8.0, true); // Move backwards 5 ft.
+            robot.straight(DRIVE_SPEED, -58, 8.0, true); // Move backwards 5 ft.
             robot.claw.setPosition(1.0); // Open Claw
             sleep(1000);
-            robot.straight(DRIVE_SPEED, -82, 9.0, true); // Go to the other stone
-            robot.strafe(DRIVE_SPEED, -10, 5.0, true); // Strafe left to prepare to take the block
+            robot.straight(DRIVE_SPEED, 82, 9.0, true); // Go to the other stone
+            robot.strafe(DRIVE_SPEED, -11, 5.0, true); // Strafe left to prepare to take the block
             robot.claw.setPosition(0.65); // Bring down claw servo on block
             sleep(1000);
             robot.strafe(DRIVE_SPEED, 10, 5.0, true); // Strafe right to make space to move through middle
-            robot.straight(DRIVE_SPEED, 82, 9.0, true); // Move backwards 84 in.
+            robot.straight(DRIVE_SPEED, -82, 9.0, true); // Move backwards 84 in.
             robot.claw.setPosition(1.0); // Open Claw
             sleep(1000);
             robot.strafe(DRIVE_SPEED, -5, 2.0, true);
-            robot.straight(DRIVE_SPEED, -20, 5.0, true); // Park
+            robot.straight(DRIVE_SPEED, 20, 5.0, true); // Park
             telemetry.addData("Path", "Complete");
             telemetry.update();
-        } else if (valLeft == 0) { // If the right block is the skystone, score with it and a regular stone
+        } else if (valRight == 0) { // If the right block is the skystone, score with it and a regular stone
             robot.straight(DRIVE_SPEED, -3, 2.0, true); // Line the claw up with the block
-            robot.straight(DRIVE_SPEED, -8, 2.0, true); // Line the claw up with the leftmost block
+
+            // CHECK THIS LINE IF TO MUCH TO RIGHT OR LEFT
+
+            robot.straight(DRIVE_SPEED, 8, 2.0, true); // Line the claw up with the leftmost block
             robot.strafe(DRIVE_SPEED, -29.5, 5.0, true);  // Strafe left toward a block
             robot.claw.setPosition(0.65); // Bring down claw servo on block
             sleep(1000);
             robot.strafe(DRIVE_SPEED, 10, 5.0, true); // Strafe right to make space to move through middle
-            robot.straight(DRIVE_SPEED, 66, 5.0, true); // Move backwards 62 inches.
+            robot.straight(DRIVE_SPEED, -66, 5.0, true); // Move backwards 62 inches.
             robot.claw.setPosition(1.0); // Open Claw
             sleep(1000);
-            robot.straight(DRIVE_SPEED, -50, 9.0, true); // Go to the other stone
-            robot.strafe(DRIVE_SPEED, -10, 5.0, true); // Strafe left to prepare to take the block
+            robot.straight(DRIVE_SPEED, 50, 9.0, true); // Go to the other stone
+            robot.strafe(DRIVE_SPEED, -11, 5.0, true); // Strafe left to prepare to take the block
             robot.claw.setPosition(0.65); // Bring down claw servo on block
             sleep(1000);
             robot.strafe(DRIVE_SPEED, 10, 5.0, true); // Strafe right to make space to move through middle
-            robot.straight(DRIVE_SPEED, 50, 5.0, true); // Move backwards 46 in.
+            robot.straight(DRIVE_SPEED, -50, 5.0, true); // Move backwards 46 in.
             robot.claw.setPosition(1.0); // Open Claw
             sleep(1000);
             robot.strafe(DRIVE_SPEED, -5, 2.0, true);
-            robot.straight(DRIVE_SPEED, -20, 5.0, true); // Park
+            robot.straight(DRIVE_SPEED, 20, 5.0, true); // Park
             telemetry.addData("Path", "Complete");
             telemetry.update();
         }
@@ -219,8 +222,8 @@ public class MecBlueQuarry extends LinearOpMode {
             yCbCr
         }
 
-        private MecBlueQuarry.StageSwitchingPipeline.Stage stageToRenderToViewport = MecBlueQuarry.StageSwitchingPipeline.Stage.detection;
-        private MecBlueQuarry.StageSwitchingPipeline.Stage[] stages = MecBlueQuarry.StageSwitchingPipeline.Stage.values();
+        private MecRedQuarry.StageSwitchingPipeline.Stage stageToRenderToViewport = MecRedQuarry.StageSwitchingPipeline.Stage.detection;
+        private MecRedQuarry.StageSwitchingPipeline.Stage[] stages = MecRedQuarry.StageSwitchingPipeline.Stage.values();
 
         // When you tap on the screen, the screen changes from its detection methods
         @Override

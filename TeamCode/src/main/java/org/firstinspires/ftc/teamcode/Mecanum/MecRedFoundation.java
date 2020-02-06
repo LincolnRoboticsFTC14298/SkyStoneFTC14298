@@ -83,6 +83,8 @@ public class MecRedFoundation extends LinearOpMode {
         // Step through each leg of the path,
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
 
+        // Strafe into depot
+        encoderDrive(DRIVE_SPEED, -4, 4, 4, -4, 3.0);
         // Robot starts backwards because the foundation servos are at the back of the robot
         encoderDrive(DRIVE_SPEED,  -33,  -33, -33, -33, 6.0);  // S1: Backwards 33 inches, 6 second timeout
         // Close servos
@@ -95,17 +97,17 @@ public class MecRedFoundation extends LinearOpMode {
         robot.rightFoundationServo.setPosition(0.0);
         sleep(1000);
 
-        // Strafe "left" just outside the foundation
-        encoderDrive(DRIVE_SPEED, -34, 34, 34, -34, 5.0);
+        // Strafe "right" just outside the foundation
+        encoderDrive(DRIVE_SPEED, 34, -34, -34, 34, 5.0);
 
         // Move backwards 18 inches to be right next to the foundation
         encoderDrive(DRIVE_SPEED, -18, -18, -18, -18, 5.0);
 
-        // Strafe right to put foundation in
-        encoderDrive(1, 22, -22, -22, 22, 5.0);
+        // Strafe left to put foundation in
+        encoderDrive(1, -22, 22, 22, -22, 5.0);
 
-        // Strafe "left" toward the line
-        encoderDrive(1, -35, 35, 35, -35, 6.0);
+        // Strafe "right" toward the line
+        encoderDrive(1, 35, -35, -35, 35, 6.0);
 
         telemetry.addData("Path", "Complete");
         telemetry.update();
