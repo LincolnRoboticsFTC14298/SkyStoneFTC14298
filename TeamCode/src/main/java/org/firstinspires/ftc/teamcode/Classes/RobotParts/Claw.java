@@ -1,11 +1,8 @@
 package org.firstinspires.ftc.teamcode.Classes.RobotParts;
 
-import org.firstinspires.ftc.teamcode.Classes.ModifiedMotorsAndServos.NewServo;
-
-public class Claw extends robotPart{
-
-    public Claw(NewServo[] servo) {
-        this.servos = servo;
+public class Claw extends RobotPart {
+    public Claw() {
+        super.name = "Claw";
     }
 
     public void open() {

@@ -1,22 +1,21 @@
 package org.firstinspires.ftc.teamcode.Classes.RobotParts;
 
 import org.firstinspires.ftc.teamcode.Classes.ModifiedMotorsAndServos.NewDcMotor;
-import org.firstinspires.ftc.teamcode.Classes.ModifiedMotorsAndServos.NewServo;
 
-public class Lift extends robotPart {
-    public Lift(NewDcMotor[] motors, NewServo[] servos) {
-        this.motors = motors;
-        this.servos = servos;
+public class Lift extends RobotPart {
+
+    public Lift() {
+        super.name = "Lift";
     }
 
     public void extend() {
         for (NewDcMotor motor : motors) {
-            motor.setMaxPower();
+            motor.setToMaxPower();
         }
     }
     public void contract() {
         for (NewDcMotor motor : motors) {
-            motor.setMinPower();
+            motor.setToMinPower();
         }
     }
 }

@@ -1,0 +1,130 @@
+{
+  "Drivetrain" : {
+    "Motors": [
+      {
+        "name":"frontLeft",
+        "defaultPower": 0,
+        "maxPower": 1,
+        "minPower": 0,
+        "isReversed": false
+      },
+      {
+        "name":"frontRight",
+        "defaultPower": 0,
+        "maxPower": 1,
+        "minPower": 0,
+        "isReversed": true
+      },
+      {
+        "name":"backLeft",
+        "defaultPower": 0,
+        "maxPower": 1,
+        "minPower": 0,
+        "isReversed": false
+      },
+      {
+        "name":"backRight",
+        "defaultPower": 0,
+        "maxPower": 1,
+        "minPower": 0,
+        "isReversed": true
+      }
+    ]
+  },
+  "Parts" : {
+    "Claw": {
+      "Motors": [
+      ],
+      "Servos" : [
+        {
+          "name":"claw",
+          "defaultPos": 0,
+          "openedPos": 1,
+          "closedPos": 0,
+          "maxPos": 1,
+          "minPos": 0,
+          "isReversed": false
+        }
+      ]
+    },
+    "Flipper": {
+      "Motors": [
+      ],
+      "Servos" : [
+        {
+          "name":"flipper",
+          "defaultPos": 0,
+          "openedPos": 1,
+          "closedPos": 0,
+          "maxPos": 1,
+          "minPos": 0,
+          "isReversed": false
+        }
+      ],
+      "stepSize": 0.05
+    },
+    "FoundationClaw": {
+      "Motors": [
+      ],
+      "Servos" : [
+        {
+          "name":"leftFoundationClaw",
+          "defaultPos": 0,
+          "openedPos": 1,
+          "closedPos": 0,
+          "maxPos": 1,
+          "minPos": 0,
+          "isReversed": false
+        },
+        {
+          "name":"rightFoundationClaw",
+          "defaultPos": 0,
+          "openedPos": 1,
+          "closedPos": 0,
+          "maxPos": 1,
+          "minPos": 0,
+          "isReversed": true
+        }
+      ]
+    },
+    "Intake": {
+      "Motors": [
+        {
+          "name":"leftIntakeMotor",
+          "defaultPower": 0,
+          "maxPower": 1,
+          "minPower": 0,
+          "isReversed": false
+        },
+        {
+          "name":"rightIntakeMotor",
+          "defaultPower": 0,
+          "maxPower": 1,
+          "minPower": 0,
+          "isReversed": true
+        }
+      ],
+      "Servos" : [
+        {
+          "name": "leftIntakeServo",
+          "defaultPos": 0,
+          "openedPos": 1,
+          "closedPos": 0,
+          "maxPos": 1,
+          "minPos": 0,
+          "isReversed": false
+        },
+        {
+          "name":"rightIntakeServo",
+          "defaultPos": 0,
+          "openedPos": 1,
+          "closedPos": 0,
+          "maxPos": 1,
+          "minPos": 0,
+          "isReversed": true
+        }
+      ],
+      "stepSize": 0.05
+    }
+  }
+}

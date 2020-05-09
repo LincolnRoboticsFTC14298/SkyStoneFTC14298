@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.Classes;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
+
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class Encoders {
