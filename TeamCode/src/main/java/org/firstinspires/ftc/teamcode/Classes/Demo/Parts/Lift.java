@@ -1,6 +1,7 @@
-package org.firstinspires.ftc.teamcode.Classes.RobotParts;
+package org.firstinspires.ftc.teamcode.Classes.Demo.Parts;
 
 import org.firstinspires.ftc.teamcode.Classes.ModifiedMotorsAndServos.NewDcMotor;
+import org.firstinspires.ftc.teamcode.Classes.RobotPart;
 
 public class Lift extends RobotPart {
 
@@ -10,12 +11,12 @@ public class Lift extends RobotPart {
 
     public void extend() {
         for (NewDcMotor motor : motors) {
-            motor.setToMaxPower();
+            motor.setPowerMax();
         }
     }
     public void contract() {
         for (NewDcMotor motor : motors) {
-            motor.setToMinPower();
+            motor.setPowerMin();
         }
     }
 }

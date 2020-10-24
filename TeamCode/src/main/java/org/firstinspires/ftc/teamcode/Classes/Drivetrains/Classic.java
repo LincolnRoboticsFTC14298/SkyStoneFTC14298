@@ -1,39 +1,38 @@
-package org.firstinspires.ftc.teamcode.Classes.DriveTrain;
+package org.firstinspires.ftc.teamcode.Classes.Drivetrains;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.teamcode.Classes.Drivetrain;
 import org.firstinspires.ftc.teamcode.Classes.ModifiedMotorsAndServos.NewDcMotor;
 
-public class Mecanum extends DriveTrain {
-    public TeleOp teleop;
-    public Autonomous autonomous;
-    public Mecanum() {
+public class Classic extends Drivetrain {
+    private NewDcMotor[] motors = getNewDcMotors();
+    TeleOp teleop;
+    Autonomous autonomous;
+    public Classic() {
         teleop = new TeleOp();
         autonomous = new Autonomous();
-        autonomous.init(383.6 , 2.0, 4.0, Math.sqrt(13*13 + 15*15)/2.0);
     }
-    public class TeleOp implements DriveTrain.TeleOp {
+    public class TeleOp implements Drivetrain.TeleOp {
         public void move(double leftx, double lefty, double rightx, double righty) {
-            double speed = Math.hypot(leftx, lefty);
-            double angle = Math.atan2(-1 * lefty, leftx);
+            double forward = -lefty;
             double turn = rightx;
-            double theta = angle - Math.PI / 4;
 
-            motors[0].setPower(speed * Math.cos(theta) + turn);
-            motors[1].setPower(speed * Math.sin(theta) - turn);
-            motors[2].setPower(speed * Math.sin(theta) + turn);
-            motors[3].setPower(speed * Math.cos(theta) - turn);
+            for (NewDcMotor motor : motors) {
+                motor.setPower(Range.clip(forward-turn, -1, 1));
+                turn *= -1;
+            }
         }
     }
-    public class Autonomous implements DriveTrain.Autonomous {
+    public class Autonomous implements Drivetrain.Autonomous {
         private ElapsedTime runtime = new ElapsedTime();
         private double COUNTS_PER_MOTOR_REV;    // eg: 5202 Series Yellow Jacket Planetary Gear Motor (13.7:1 Ratio, 435 RPM)
         private double DRIVE_GEAR_REDUCTION;     // This is < 1.0 if geared UP
         private double WHEEL_DIAMETER_INCHES;     // For figuring circumference
         private double COUNTS_PER_INCH; // (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) / (WHEEL_DIAMETER_INCHES * 3.1415);
         private double RADIUS;
-
 
         public void init(double COUNTS_PER_MOTOR_REV, double DRIVE_GEAR_REDUCTION, double WHEEL_DIAMETER_INCHES, double RADIUS) {
             this.COUNTS_PER_MOTOR_REV = COUNTS_PER_MOTOR_REV;
@@ -64,11 +63,7 @@ public class Mecanum extends DriveTrain {
                 distances = null;
             }
             encoderDrive(speed, distances, timeout, opModeActive);
-        }
-        public void strafe(double speed, double distance, double timeout, boolean opModeActive) {
-            double[] distances = {distance, -distance, -distance, distance};
-            encoderDrive(speed, distances, timeout, opModeActive);
-        }
+        };
 
         public void encoderDrive(double speed, double[] distances, double timeout, boolean opModeActive) {
             int[] targetdistances;
@@ -137,6 +132,5 @@ public class Mecanum extends DriveTrain {
             }
             return motorsAreBusy;
         }
-
     }
 }

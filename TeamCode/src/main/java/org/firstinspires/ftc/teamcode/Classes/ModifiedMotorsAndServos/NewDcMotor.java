@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.hardware.DcMotor.RunMode;
 import com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior;
 import com.qualcomm.robotcore.hardware.DcMotorController;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType;
 
 import org.json.JSONException;
@@ -49,6 +50,10 @@ public class NewDcMotor implements DcMotorSimple {
         return settings;
     }
 
+    public void map(HardwareMap hardwareMap) {
+        motor = hardwareMap.get(DcMotor.class, name);
+    }
+
     public void setName(String _name) {
         name = _name;
     }
@@ -75,13 +80,13 @@ public class NewDcMotor implements DcMotorSimple {
         return minPower;
     }
 
-    public void setToDefaultPower() {
+    public void setPowerDefault() {
         motor.setPower(defaultPower);
     }
-    public void setToMaxPower() {
+    public void setPowerMax() {
         motor.setPower(maxPower);
     }
-    public void setToMinPower() {
+    public void setPowerMin() {
         motor.setPower(minPower);
     }
 

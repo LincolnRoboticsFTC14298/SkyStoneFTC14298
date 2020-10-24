@@ -1,6 +1,7 @@
-package org.firstinspires.ftc.teamcode.Classes.RobotParts;
+package org.firstinspires.ftc.teamcode.Classes.Demo.Parts;
 
 import org.firstinspires.ftc.teamcode.Classes.ModifiedMotorsAndServos.NewServo;
+import org.firstinspires.ftc.teamcode.Classes.RobotPart;
 import org.json.JSONException;
 import org.json.JSONObject;
 

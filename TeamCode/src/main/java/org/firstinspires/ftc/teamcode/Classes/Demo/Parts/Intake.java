@@ -1,7 +1,8 @@
-package org.firstinspires.ftc.teamcode.Classes.RobotParts;
+package org.firstinspires.ftc.teamcode.Classes.Demo.Parts;
 
 import org.firstinspires.ftc.teamcode.Classes.ModifiedMotorsAndServos.NewDcMotor;
 import org.firstinspires.ftc.teamcode.Classes.ModifiedMotorsAndServos.NewServo;
+import org.firstinspires.ftc.teamcode.Classes.RobotPart;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -14,8 +15,12 @@ public class Intake extends RobotPart {
 
     @Override
     public void initJSON(JSONObject jsonObj) throws JSONException {
-        stepSize = jsonObj.getDouble("stepSize");
         super.initJSON(jsonObj);
+        try {
+            stepSize = jsonObj.getDouble("stepSize");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
     @Override
     public JSONObject getSettings() throws JSONException {
@@ -26,12 +31,12 @@ public class Intake extends RobotPart {
 
     public void extendArm() {
         for (NewServo servo : servos) {
-            servo.open();
+            servo.setPositionMax();
         }
     }
     public void contractArm() {
         for (NewServo servo : servos) {
-            servo.close();
+            servo.setPositionMin();
         }
     }
 
@@ -48,13 +53,13 @@ public class Intake extends RobotPart {
 
     public void intake() {
         for (NewDcMotor motor : motors) {
-            motor.setToMaxPower();
+            motor.setPowerMax();
         }
     }
     public void eject() {
         for (NewDcMotor motor : motors) {
             // Reverse
-            motor.setToMinPower();
+            motor.setPowerMin();
         }
     }
     public void stopMotors() {

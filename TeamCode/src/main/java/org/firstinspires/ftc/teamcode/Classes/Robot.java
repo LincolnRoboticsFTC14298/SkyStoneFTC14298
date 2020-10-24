@@ -2,10 +2,8 @@ package org.firstinspires.ftc.teamcode.Classes;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.firstinspires.ftc.teamcode.Classes.DriveTrain.DriveTrain;
 import org.firstinspires.ftc.teamcode.Classes.ModifiedMotorsAndServos.NewDcMotor;
 import org.firstinspires.ftc.teamcode.Classes.ModifiedMotorsAndServos.NewServo;
-import org.firstinspires.ftc.teamcode.Classes.RobotParts.RobotPart;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -18,12 +16,12 @@ public class Robot {
 
     private HardwareMap hardwareMap;
     private RobotPart[] robotParts;
-    private DriveTrain drivetrain;
+    private Drivetrain drivetrain;
 
     private List<NewDcMotor> motors = new ArrayList<>();
     private List<NewServo> servos = new ArrayList<>();
 
-    public Robot(DriveTrain drivetrain, RobotPart[] robotParts) {
+    public Robot(Drivetrain drivetrain, RobotPart[] robotParts) {
         this.drivetrain = drivetrain;
         this.robotParts = robotParts;
     }
@@ -39,12 +37,12 @@ public class Robot {
 
         // Initialize motors and servos
         for (NewDcMotor motor : motors) {
-            motor = (NewDcMotor) hardwareMap.dcMotor.get(motor.getName());
-            motor.setToDefaultPower();
+            motor.map(hardwareMap);
+            motor.setPowerDefault();
         }
         for (NewServo servo : servos) {
-            servo = (NewServo) hardwareMap.servo.get(servo.getName());
-            servo.setToDefaultPosition();
+            servo.map(hardwareMap);
+            servo.setPositionDefault();
         }
     }
 
@@ -62,7 +60,7 @@ public class Robot {
 
     // Note: the robotParts code must be custom made.
 
-    public DriveTrain getDriveTrain() { return this.drivetrain; }
+    public Drivetrain getDriveTrain() { return this.drivetrain; }
 
     public void loadJSON(JSONObject settings) {
         // Get drivetrain motors settings and initialize
@@ -74,7 +72,6 @@ public class Robot {
             }
         } catch (JSONException e) {
             e.printStackTrace();
-            return;
         }
 
     }
@@ -278,3 +275,29 @@ public class Robot {
     */
 
 }
+
+
+//
+//
+//public class A {
+//    public static class Factory {
+//        public A newInstance() {
+//            int b = 1;
+//            return A(b);
+//        }
+//    }
+//
+//    public static newInstance(int B) {
+//
+//    }
+//
+//    private Integer b;
+//    private A(int b) {
+//        this.b = b;
+//    }
+//
+//    public int foo() {
+//        return b * b;
+//    }
+//}
+

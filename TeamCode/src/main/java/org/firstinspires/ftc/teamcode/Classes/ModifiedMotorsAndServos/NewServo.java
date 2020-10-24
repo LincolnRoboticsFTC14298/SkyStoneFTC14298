@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode.Classes.ModifiedMotorsAndServos;
 
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareDevice;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.Servo.Direction;
 import com.qualcomm.robotcore.hardware.ServoController;
@@ -14,17 +16,13 @@ public class NewServo implements HardwareDevice {
 
     private String name = "null";
     private double defaultPos = 0;
-    private double openedPos = 1;
-    private double closedPos = 0;
     private double maxPos = 1;
     private double minPos = 0;
     private boolean isReversed;
 
-    public void init(String _name, double _defaultPos, double _openedPos, double _closedPos, double _maxPos, double _minPos, boolean _isReversed) {
+    public void init(String _name, double _defaultPos, double _maxPos, double _minPos, boolean _isReversed) {
         name = _name;
         defaultPos = _defaultPos;
-        openedPos = _openedPos;
-        closedPos = _closedPos;
         maxPos = _maxPos;
         minPos = _minPos;
         isReversed = _isReversed;
@@ -33,13 +31,11 @@ public class NewServo implements HardwareDevice {
     public void initJSON(JSONObject settings) throws JSONException {
         String _name = settings.getString("name");
         double _defaultPos = settings.getDouble("defaultPower");
-        double _openedPos = settings.getDouble("maxPower");
-        double _closedPos = settings.getDouble("minPower");
         double _maxPos = settings.getDouble("maxPos");
         double _minPos = settings.getDouble("minPos");
         Boolean _isReversed = settings.getBoolean("isReversed");
 
-        init(_name, _defaultPos, _openedPos, _closedPos, _maxPos, _minPos, _isReversed);
+        init(_name, _defaultPos, _maxPos, _minPos, _isReversed);
     }
 
     public JSONObject getSettings() throws JSONException {
@@ -47,13 +43,15 @@ public class NewServo implements HardwareDevice {
 
         settings.put("name", name);
         settings.put("defaultPos", defaultPos);
-        settings.put("openedPos", openedPos);
-        settings.put("closedPos", closedPos);
         settings.put("maxPos", maxPos);
         settings.put("minPos", minPos);
         settings.put("isReversed", isReversed);
 
         return settings;
+    }
+
+    public void map(HardwareMap hardwareMap) {
+        servo = hardwareMap.get(Servo.class, name);
     }
 
     public void setName(String _name) {
@@ -62,11 +60,11 @@ public class NewServo implements HardwareDevice {
     public void setDefaultPosition(double _defaultPos) {
         defaultPos = _defaultPos;
     }
-    public void setOpenedPosition(double _openedPos) {
-        openedPos = _openedPos;
+    public void setMaxPosition(double _maxPos) {
+        maxPos = _maxPos;
     }
-    public void setClosedPosition(double _closedPos) {
-        closedPos = _closedPos;
+    public void setMinPosition(double _minPos) {
+        minPos = _minPos;
     }
 
     public String getName() {
@@ -75,21 +73,21 @@ public class NewServo implements HardwareDevice {
     public double getDefaultPosition() {
         return defaultPos;
     }
-    public double getOpenedPosition() {
-        return openedPos;
+    public double getMaxPosition() {
+        return maxPos;
     }
-    public double getClosedPosition() {
-        return closedPos;
+    public double getMinPosition() {
+        return minPos;
     }
 
-    public void setToDefaultPosition() {
+    public void setPositionDefault() {
         servo.setPosition(defaultPos);
     }
-    public void open() {
-        servo.setPosition(openedPos);
+    public void setPositionMax() {
+        servo.setPosition(maxPos);
     }
-    public void close() {
-        servo.setPosition(closedPos);
+    public void setPositionMin() {
+        servo.setPosition(minPos);
     }
     public void increment(double increment){
         double pos = Range.clip(getPosition() + increment, maxPos, minPos);
@@ -150,4 +148,7 @@ public class NewServo implements HardwareDevice {
     public void resetDeviceConfigurationForOpMode() {
         servo.resetDeviceConfigurationForOpMode();
     }
+
+    public void close() { servo.close(); }
+
 }

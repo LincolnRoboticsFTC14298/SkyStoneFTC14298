@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Classes.DriveTrain;
+package org.firstinspires.ftc.teamcode.Classes;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 
@@ -10,7 +10,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class DriveTrain {
+public abstract class Drivetrain {
     public NewDcMotor[] motors;
     public void init(NewDcMotor[] motors){
         this.motors = motors;
@@ -50,22 +50,22 @@ public abstract class DriveTrain {
         return motors;
     }
 
-    interface TeleOp {
+    public interface TeleOp {
         void move(double leftx, double lefty, double rightx, double righty);
     }
 
-    interface Autonomous {
+    public interface Autonomous {
         void move(double speed, double distance, double timeout, boolean opModeActive);
         void rotate(double speed, double angle, double timeout, boolean opModeActive);
     }
 
-    final void setMode(NewDcMotor[] motors, DcMotor.RunMode mode) {
+    public void setMode(NewDcMotor[] motors, DcMotor.RunMode mode) {
         for (NewDcMotor motor : motors) {
             motor.setMode(mode);
         }
     }
 
-    final void setPower(NewDcMotor[] motors, double power) {
+    public void setPower(NewDcMotor[] motors, double power) {
         for (NewDcMotor motor : motors) {
             motor.setPower(power);
         }

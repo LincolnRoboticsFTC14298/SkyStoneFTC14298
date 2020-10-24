@@ -43,20 +43,20 @@ public class MecanumBotTeleOp extends LinearOpMode {
             // Move intake motors to spin
             if (gamepad1.right_bumper) {
                 robot.intake.intake();
-            }
-            else if (gamepad1.left_bumper) {
+            } else if (gamepad1.left_bumper) {
                 robot.intake.eject();
-            }
-            else if (gamepad1.left_bumper && gamepad1.right_bumper){
+            } else if (gamepad1.left_bumper && gamepad1.right_bumper) {
                 robot.intake.stopMotors();
             }
 
             if (gamepad1.dpad_up) {
-                robot.flipper.incrementUp();
+                robot.intake.eject();
             }
             if (gamepad1.dpad_down) {
                 robot.flipper.incrementDown();
             }
+
+            telemetry.addData("Claw pos: ", robot.claw.servos[0].getPosition());
         }
     }
 }

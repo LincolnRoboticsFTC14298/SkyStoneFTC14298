@@ -4,13 +4,13 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ReadWriteFile;
 
 import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
-import org.firstinspires.ftc.teamcode.Classes.DriveTrain.Mecanum;
+import org.firstinspires.ftc.teamcode.Classes.Demo.Parts.Mecanum;
 import org.firstinspires.ftc.teamcode.Classes.Robot;
-import org.firstinspires.ftc.teamcode.Classes.RobotParts.Claw;
-import org.firstinspires.ftc.teamcode.Classes.RobotParts.Flipper;
-import org.firstinspires.ftc.teamcode.Classes.RobotParts.FoundationClaw;
-import org.firstinspires.ftc.teamcode.Classes.RobotParts.Intake;
-import org.firstinspires.ftc.teamcode.Classes.RobotParts.RobotPart;
+import org.firstinspires.ftc.teamcode.Classes.Demo.Parts.Claw;
+import org.firstinspires.ftc.teamcode.Classes.Demo.Parts.Flipper;
+import org.firstinspires.ftc.teamcode.Classes.Demo.Parts.FoundationClaw;
+import org.firstinspires.ftc.teamcode.Classes.Demo.Parts.Intake;
+import org.firstinspires.ftc.teamcode.Classes.RobotPart;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -24,7 +24,7 @@ public class MecanumBot {
     public FoundationClaw foundationClaw = new FoundationClaw();
     public Flipper flipper = new Flipper();
 
-    private RobotPart[] robotParts = new RobotPart[]{claw, intake, foundationClaw, flipper};
+    public RobotPart[] robotParts = new RobotPart[]{claw, intake, foundationClaw, flipper};
 
     private Robot robot = new Robot(drivetrain, robotParts);
 
